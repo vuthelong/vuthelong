@@ -1,45 +1,38 @@
-<div align="center">
+### Hi, I'm vuthelong
 
-<img src="./assets/masthead.svg" alt="vuthelong — Material Studies 2026. Unity editor tools, agent skills, and small material studies. 19 repos, 1,158 commits." width="100%">
+Unity developer. I build editor tools, agent skills, and small interactive experiments.
 
-</div>
+**2026:** 19 repos · 1,158 commits · C#, Swift, JavaScript, WebGPU
 
-<br>
+---
 
-<img src="./assets/head-featured.svg" alt="01 · Featured — Three studies worth opening." width="100%">
+#### Featured
 
-<p align="center">
-<img src="./assets/card-environment.svg" alt="EnvironmentPrototype — Unity 6 environment prototype with a day-night cycle, procedural sky and building tools. Private." width="100%">
-<a href="https://github.com/vuthelong/harbor-jelly"><img src="./assets/card-harbor-jelly.svg" alt="Harbor Jelly — a small working harbour set in a block of wobbly sea, rendered live with WebGPU." width="100%"></a>
-<a href="https://github.com/vuthelong/unity-csharp-skills"><img src="./assets/card-unity-csharp-skills.svg" alt="Unity C# Skills — 71 curated Agent Skills for Unity 6 and C# in 10 Claude Code plugins." width="100%"></a>
-</p>
+| Project | What it is | Stack |
+|---|---|---|
+| **EnvironmentPrototype** <sub>private</sub> | Living environment: game clock, astronomical sun with seasons, procedural sky, stars, moonlight, clouds, fence and wall tools | Unity 6 · URP |
+| [**harbor-jelly**](https://github.com/vuthelong/harbor-jelly) | A small working harbour inside a block of wobbly sea, simulated live | WebGPU |
+| [**unity-csharp-skills**](https://github.com/vuthelong/unity-csharp-skills) | 71 curated Agent Skills for Unity 6 and C#, in 10 Claude Code plugins | C# · Claude Code |
 
-<img src="./assets/head-ktools.svg" alt="02 · Kingfisher K-Tools — Small tools for the Unity Editor." width="100%">
+#### Kingfisher K-Tools
 
-<p align="center">
-<img src="./assets/card-kfolders.svg" alt="K-Folders v1.0.9 — color-coded folder icons for the Project window. Private." width="49%">
-<img src="./assets/card-khierarchy.svg" alt="K-Hierarchy v1.0.7 — supercharged Hierarchy window. Private." width="49%">
-<img src="./assets/card-kinspector.svg" alt="K-Inspector v1.1.0 — supercharged Inspector. Private." width="49%">
-<img src="./assets/card-kfavorites.svg" alt="K-Favorites v1.0.7 — bookmark panel for assets and scene objects. Private." width="49%">
-<img src="./assets/card-ktabs.svg" alt="K-Tabs v1.0.7 — browser-style tabs for editor windows. Private." width="49%">
-<a href="https://github.com/vuthelong/KEmoji"><img src="./assets/card-kemoji.svg" alt="K-Emoji v1.0.7 — TextMeshPro sprite asset generation from a sprite atlas." width="49%"></a>
-<a href="https://github.com/vuthelong/KClipboard"><img src="./assets/card-kclipboard.svg" alt="K-Clipboard v0.1.0 — persisted component and GameObject copy history." width="49%"></a>
-<a href="https://github.com/vuthelong/KScene"><img src="./assets/card-kscene.svg" alt="K-Scene v0.1.0 — Scene View camera bookmarks." width="49%"></a>
-<a href="https://github.com/vuthelong/KSetting"><img src="./assets/card-ksetting.svg" alt="K-Setting v1.0.4 — shared settings window for the K-Tools." width="49%"></a>
-<img src="./assets/card-ktool.svg" alt="kTool v1.0.2 — development project holding every K-Tool as a submodule. Private." width="49%">
-</p>
+Editor-only Unity tools that share one settings window. Each installs on its own.
 
-<img src="./assets/head-harbours.svg" alt="03 · Side harbours — Away from Unity." width="100%">
+| Tool | What it does | Version |
+|---|---|---|
+| **K-Folders** <sub>private</sub> | Color-coded folder icons, content minimap, path bar | 1.0.9 |
+| **K-Hierarchy** <sub>private</sub> | Navigation bar, scene selector, component minimap, shortcuts | 1.0.7 |
+| **K-Inspector** <sub>private</sub> | Selection history, save in play mode, detachable components | 1.1.0 |
+| **K-Favorites** <sub>private</sub> | Bookmark overlay for assets and scene objects | 1.0.7 |
+| **K-Tabs** <sub>private</sub> | Browser-style tabs for editor windows | 1.0.7 |
+| [**K-Emoji**](https://github.com/vuthelong/KEmoji) | Sprites to TextMeshPro sprite asset, atlas and constants script | 1.0.7 |
+| [**K-Clipboard**](https://github.com/vuthelong/KClipboard) | Persisted copy history for components and GameObjects | 0.1.0 |
+| [**K-Scene**](https://github.com/vuthelong/KScene) | Scene View camera bookmarks with thumbnails | 0.1.0 |
+| [**K-Setting**](https://github.com/vuthelong/KSetting) | Shared settings backend for every K-Tool | 1.0.4 |
 
-<p align="center">
-<a href="https://github.com/vuthelong/MacClipboard"><img src="./assets/card-macclipboard.svg" alt="MacClipboard — menu-bar clipboard manager for macOS." width="49%"></a>
-<a href="https://github.com/vuthelong/loldle-discord-bot"><img src="./assets/card-loldle.svg" alt="LoLdle Bot — play LoLdle in Discord with slash commands." width="49%"></a>
-</p>
+#### Elsewhere
 
-<img src="./assets/head-logbook.svg" alt="04 · Logbook — Voyages, April to October." width="100%">
-
-<p align="center">
-<img src="./assets/logbook.svg" alt="Timeline of 19 repositories from 2026, from Project14 in April to harbor-jelly in October." width="100%">
-</p>
-
-<img src="./assets/footer.svg" alt="Public cards open their repo; private cards are marked. Theme borrowed from Harbor Jelly." width="100%">
+| Project | What it is | Stack |
+|---|---|---|
+| [**MacClipboard**](https://github.com/vuthelong/MacClipboard) | Menu-bar clipboard history for macOS on `⌘⇧V` | Swift |
+| [**loldle-discord-bot**](https://github.com/vuthelong/loldle-discord-bot) | Play LoLdle in Discord with slash commands | Node.js |
