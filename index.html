@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vuthelong — Resume</title>
+<meta name="description" content="Unity developer building editor tools, agent skills and interactive experiments.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #18181b;
+  --muted: #52525b;
+  --faint: #a1a1aa;
+  --line: #e4e4e7;
+  --chip: #f4f4f5;
+  --accent: #2563eb;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a0a0b;
+    --text: #f4f4f5;
+    --muted: #a1a1aa;
+    --faint: #71717a;
+    --line: #27272a;
+    --chip: #18181b;
+    --accent: #60a5fa;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 15px/1.65 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+main { max-width: 760px; margin: 0 auto; padding: 72px 24px 96px; }
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--accent); color: var(--accent); }
+
+header { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+h1 { margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+.role { margin: 6px 0 0; font-size: 17px; color: var(--muted); }
+.links { display: flex; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+.links a { text-decoration: none; }
+.links a:hover { color: var(--accent); }
+.print { appearance: none; border: 1px solid var(--line); background: transparent; color: var(--muted); font: inherit; font-size: 13px; padding: 4px 10px; border-radius: 6px; cursor: pointer; }
+.print:hover { color: var(--text); border-color: var(--faint); }
+
+.summary { margin: 28px 0 0; color: var(--muted); max-width: 640px; }
+.stats { display: flex; gap: 16px 32px; margin: 24px 0 0; padding: 0; list-style: none; flex-wrap: wrap; }
+.stats li { display: flex; flex-direction: column; }
+.stats b { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+.stats span { font-size: 12px; color: var(--faint); }
+
+section { margin-top: 56px; }
+h2 { margin: 0 0 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
+
+.item { display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; padding: 18px 0; border-top: 1px solid var(--line); }
+.item:first-of-type { border-top: 0; padding-top: 0; }
+.item h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.item h3 .tag { margin-left: 8px; font-size: 11px; font-weight: 500; color: var(--faint); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; vertical-align: 2px; }
+.item time { font-size: 13px; color: var(--faint); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.item .meta { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--muted); font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; }
+.item ul { grid-column: 1 / -1; margin: 8px 0 0; padding-left: 18px; color: var(--muted); }
+.item li { margin: 2px 0; }
+.item li::marker { color: var(--faint); }
+
+.tools { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px 24px; margin: 12px 0 0; padding: 0; list-style: none; grid-column: 1 / -1; }
+.tools li { font-size: 14px; color: var(--muted); }
+.tools b { color: var(--text); font-weight: 500; }
+
+.skills { display: grid; grid-template-columns: 140px 1fr; gap: 12px 24px; margin: 0; }
+.skills dt { font-size: 14px; color: var(--faint); }
+.skills dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 13px; padding: 2px 9px; border-radius: 6px; background: var(--chip); border: 1px solid var(--line); }
+
+footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
+
+@media (max-width: 560px) {
+  main { padding: 48px 16px 72px; }
+  h1 { font-size: 28px; }
+  .item { grid-template-columns: 1fr; }
+  .item time { order: -1; }
+  .skills { grid-template-columns: 1fr; gap: 4px; }
+  .skills dd { margin-bottom: 12px; }
+}
+
+@media print {
+  :root { --bg: #fff; --text: #000; --muted: #333; --faint: #666; --line: #ddd; --chip: #f5f5f5; }
+  @page { size: A4; margin: 14mm 16mm; }
+  body { font-size: 11pt; }
+  main { max-width: none; padding: 0; }
+  .print { display: none; }
+  section { margin-top: 28px; break-inside: auto; }
+  .item { break-inside: avoid; padding: 10px 0; }
+  a { text-decoration: none; }
+  footer { display: none; }
+}
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div>
+    <h1>vuthelong</h1>
+    <p class="role">Unity Developer · Editor Tooling</p>
+  </div>
+  <nav class="links">
+    <a href="https://github.com/vuthelong">github.com/vuthelong</a>
+    <button class="print" type="button" onclick="window.print()">Save as PDF</button>
+  </nav>
+</header>
+
+<p class="summary">Unity developer working in Unity 6 and C#. I build editor tools that remove friction from daily work, procedural environments and rendering, and AI agent skills for game development. Comfortable outside Unity too: macOS apps in Swift, WebGPU, and Node.js.</p>
+
+<ul class="stats">
+  <li><b>19</b><span>repositories in 2026</span></li>
+  <li><b>1,158</b><span>commits in 2026</span></li>
+  <li><b>8</b><span>Unity editor tools</span></li>
+  <li><b>71</b><span>agent skills</span></li>
+</ul>
+
+<section>
+  <h2>Projects</h2>
+
+  <div class="item">
+    <h3>EnvironmentPrototype<span class="tag">private</span></h3>
+    <time>Oct 2026</time>
+    <p class="meta">Unity 6 · URP · C# · HLSL</p>
+    <ul>
+      <li>Game clock at 20 real minutes per day, with time scaling and jumps.</li>
+      <li>Astronomical sun path at 50° N with seasonal day length; sun-driven light, ambient, fog and shadows.</li>
+      <li>Procedural sky with sun disc, Belt of Venus and Earth shadow; stars and Milky Way rotating with sidereal time; moonlight and clouds.</li>
+      <li>In-game fence and wall tools, with instanced bricks shaped in the vertex shader.</li>
+      <li>471 commits in eight days, each feature tracked against specs, tests and screenshot sign-off.</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <h3>Kingfisher K-Tools<span class="tag">8 tools</span></h3>
+    <time>Aug – Sep 2026</time>
+    <p class="meta">Unity Editor · C# · UPM</p>
+    <ul>
+      <li>Suite of independent editor tools, each its own package installable from a git URL, all editor-only.</li>
+      <li>Shared settings backend (<a href="https://github.com/vuthelong/KSetting">K-Setting</a>) that discovers installed tools by reflection, so nothing needs wiring.</li>
+      <li>Versioned releases and a development project that holds every tool as a git submodule.</li>
+    </ul>
+    <ul class="tools">
+      <li><b>K-Folders</b> 1.0.9 · folder colors, minimap</li>
+      <li><b>K-Hierarchy</b> 1.0.7 · hierarchy navigation</li>
+      <li><b>K-Inspector</b> 1.1.0 · inspector tooling</li>
+      <li><b>K-Favorites</b> 1.0.7 · bookmark overlay</li>
+      <li><b>K-Tabs</b> 1.0.7 · editor window tabs</li>
+      <li><b><a href="https://github.com/vuthelong/KEmoji">K-Emoji</a></b> 1.0.7 · TMP sprite assets</li>
+      <li><b><a href="https://github.com/vuthelong/KClipboard">K-Clipboard</a></b> 0.1.0 · copy history</li>
+      <li><b><a href="https://github.com/vuthelong/KScene">K-Scene</a></b> 0.1.0 · camera bookmarks</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <h3><a href="https://github.com/vuthelong/unity-csharp-skills">unity-csharp-skills</a></h3>
+    <time>Oct 2026</time>
+    <p class="meta">Claude Code plugins · Unity 6 · C#</p>
+    <ul>
+      <li>71 Agent Skills in 10 plugins covering C# style and review, editor tooling, URP and VFX, UI, 2D, gameplay, audio, services and asset pipeline.</li>
+      <li>Merged and deduplicated from several sources; library skills follow each library's source code where its README disagrees.</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <h3><a href="https://github.com/vuthelong/harbor-jelly">Harbor Jelly</a></h3>
+    <time>Oct 2026</time>
+    <p class="meta">WebGPU · JavaScript · Playwright</p>
+    <ul>
+      <li>Real-time simulation of a small harbour inside a block of jelly sea: waves, a ship that loads and casts off, fish and throwable lifebuoys.</li>
+      <li>Single-file build, with choreography unit tests and Playwright end-to-end tests.</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <h3><a href="https://github.com/vuthelong/MacClipboard">MacClipboard</a></h3>
+    <time>Aug 2026</time>
+    <p class="meta">Swift · SwiftUI · AppKit</p>
+    <ul>
+      <li>Menu-bar clipboard history for macOS on a global ⌘⇧V hotkey, with search, pins and auto-paste.</li>
+      <li>Floating panel with a hand-built glass material that respects Reduce Transparency; launch at login through SMAppService.</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <h3><a href="https://github.com/vuthelong/loldle-discord-bot">LoLdle Discord Bot</a></h3>
+    <time>Aug 2026</time>
+    <p class="meta">Node.js · discord.js</p>
+    <ul>
+      <li>Daily League of Legends guessing game in Discord: slash commands, autocomplete, comparison embeds and daily announcements.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Skills</h2>
+  <dl class="skills">
+    <dt>Languages</dt>
+    <dd><span class="chip">C#</span><span class="chip">HLSL</span><span class="chip">Swift</span><span class="chip">JavaScript</span></dd>
+    <dt>Unity</dt>
+    <dd><span class="chip">Unity 6</span><span class="chip">URP</span><span class="chip">Editor scripting</span><span class="chip">Package Manager</span><span class="chip">Shaders</span><span class="chip">Cinemachine</span><span class="chip">Addressables</span><span class="chip">TextMesh Pro</span></dd>
+    <dt>Other</dt>
+    <dd><span class="chip">WebGPU</span><span class="chip">React Three Fiber</span><span class="chip">SwiftUI / AppKit</span><span class="chip">Node.js</span><span class="chip">Playwright</span></dd>
+    <dt>Workflow</dt>
+    <dd><span class="chip">Git &amp; submodules</span><span class="chip">Claude Code</span><span class="chip">Agent Skills</span><span class="chip">Spec-driven development</span></dd>
+  </dl>
+</section>
+
+<footer>Updated October 2026</footer>
+
+</main>
+</body>
+</html>

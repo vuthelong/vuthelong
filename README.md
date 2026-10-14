@@ -4,6 +4,8 @@ Unity developer. I build editor tools, agent skills, and small interactive exper
 
 **2026:** 19 repos · 1,158 commits · C#, Swift, JavaScript, WebGPU
 
+[Resume](https://vuthelong.github.io/vuthelong/)
+
 ---
 
 #### Featured
