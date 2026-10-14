@@ -82,6 +82,16 @@ h2 { margin: 0 0 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em
 
 footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
 
+.side { display: none; position: fixed; top: 0; bottom: 0; width: calc((100vw - 760px) / 2); padding: 0 24px; pointer-events: none; }
+.side.left { left: 0; align-items: flex-start; padding-top: 14vh; }
+.side.right { right: 0; align-items: flex-end; padding-bottom: 10vh; }
+.side figure { margin: 0 auto; width: min(340px, 100%); pointer-events: auto; opacity: 0; transition: opacity 0.8s ease; }
+.side.ready figure { opacity: 1; }
+.side canvas { display: block; width: 100%; aspect-ratio: 1; cursor: pointer; touch-action: none; }
+.side figcaption { margin-top: 4px; text-align: center; font-size: 12px; color: var(--faint); }
+.side figcaption a { text-decoration: none; color: var(--muted); }
+@media (min-width: 1240px) { .side { display: flex; } }
+
 @media (max-width: 560px) {
   main { padding: 48px 16px 72px; }
   h1 { font-size: 28px; }
@@ -96,7 +106,7 @@ footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
   @page { size: A4; margin: 14mm 16mm; }
   body { font-size: 11pt; }
   main { max-width: none; padding: 0; }
-  .print { display: none; }
+  .print, .side { display: none !important; }
   section { margin-top: 28px; break-inside: auto; }
   .item { break-inside: avoid; padding: 10px 0; }
   a { text-decoration: none; }
@@ -221,5 +231,250 @@ footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
 <footer>Updated October 2026</footer>
 
 </main>
+
+<aside class="side left" aria-hidden="true">
+  <figure>
+    <canvas id="jelly"></canvas>
+    <figcaption><a href="https://github.com/vuthelong/harbor-jelly">harbor-jelly</a> · click to poke</figcaption>
+  </figure>
+</aside>
+<aside class="side right" aria-hidden="true">
+  <figure>
+    <canvas id="cube"></canvas>
+    <figcaption><a href="https://github.com/vuthelong/cube">cube</a> · click to roll</figcaption>
+  </figure>
+</aside>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+const wide = matchMedia('(min-width: 1240px)');
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const dark = matchMedia('(prefers-color-scheme: dark)');
+let started = false;
+
+const start = async () => {
+  if (started || !wide.matches) return;
+  started = true;
+  const THREE = await import('three');
+  const { RoundedBoxGeometry } = await import('three/addons/geometries/RoundedBoxGeometry.js');
+
+  const stage = (canvas) => {
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-3, 3, 3, -3, 0.1, 100);
+    camera.position.set(10, 8.2, 10);
+    camera.lookAt(0, 0, 0);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x9a9183, 1.6));
+    const sun = new THREE.DirectionalLight(0xffffff, 2.2);
+    sun.position.set(4, 9, 3);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(1024, 1024);
+    sun.shadow.camera.left = sun.shadow.camera.bottom = -5;
+    sun.shadow.camera.right = sun.shadow.camera.top = 5;
+    sun.shadow.radius = 4;
+    scene.add(sun);
+    const resize = () => {
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      if (!w || !h) return;
+      renderer.setSize(w, h, false);
+    };
+    new ResizeObserver(resize).observe(canvas);
+    resize();
+    return { renderer, scene, camera };
+  };
+
+  const std = (color, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.55, ...extra });
+  const mesh = (geo, mat, parent, x = 0, y = 0, z = 0) => {
+    const m = new THREE.Mesh(geo, mat);
+    m.position.set(x, y, z);
+    m.castShadow = m.receiveShadow = true;
+    parent.add(m);
+    return m;
+  };
+
+  const jelly = (() => {
+    const canvas = document.getElementById('jelly');
+    const { renderer, scene, camera } = stage(canvas);
+    const S = 3, H = 1.5;
+    const root = new THREE.Group();
+    root.matrixAutoUpdate = false;
+    scene.add(root);
+
+    const body = mesh(new THREE.BoxGeometry(S, H, S), std(0x3fa896, { transparent: true, opacity: 0.78, roughness: 0.2, depthWrite: false }), root, 0, H / 2, 0);
+    body.castShadow = false;
+    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(body.geometry), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 }));
+    body.add(edges);
+
+    const water = new THREE.PlaneGeometry(S, S - 0.7, 36, 28);
+    water.rotateX(-Math.PI / 2);
+    const waterMesh = mesh(water, std(0x8fd3bf, { roughness: 0.15, flatShading: true }), root, 0, H, 0.35);
+    const base = water.attributes.position.array.slice();
+
+    const quayMat = std(0xe7dfcf);
+    mesh(new THREE.BoxGeometry(S, 0.18, 0.7), quayMat, root, 0, H + 0.02, -S / 2 + 0.35);
+    const palette = [0xe9c27a, 0xefa9b5, 0xb9a6d9, 0xc9e4b8, 0xf6c9a8, 0xa9bff0];
+    [[-1.15, 0], [-1.15, 1], [-0.65, 0], [-0.15, 0], [-0.15, 1], [0.35, 0]].forEach(([x, lvl], i) => {
+      mesh(new THREE.BoxGeometry(0.44, 0.22, 0.3), std(palette[i]), root, x, H + 0.22 + lvl * 0.22, -S / 2 + 0.33);
+    });
+    const ink = std(0x2b2620);
+    mesh(new THREE.BoxGeometry(0.06, 1.0, 0.06), ink, root, 1.1, H + 0.6, -S / 2 + 0.3);
+    mesh(new THREE.BoxGeometry(0.06, 0.06, 1.3), ink, root, 1.1, H + 1.08, -S / 2 + 0.9);
+    const hook = mesh(new THREE.BoxGeometry(0.02, 0.4, 0.02), ink, root, 1.1, H + 0.85, 0.15);
+
+    const ship = new THREE.Group();
+    root.add(ship);
+    mesh(new THREE.BoxGeometry(1.5, 0.2, 0.5), std(0x3b3530), ship, 0, 0.06, 0);
+    mesh(new THREE.BoxGeometry(0.28, 0.32, 0.4), std(0xfbf8f1), ship, 0.55, 0.32, 0);
+    [[-0.5, 0xe9c27a], [-0.18, 0x2f9c8c], [0.14, 0xefa9b5]].forEach(([x, c]) => mesh(new THREE.BoxGeometry(0.28, 0.2, 0.36), std(c), ship, x, 0.26, 0));
+
+    const fish = [0, 1, 2].map((i) => {
+      const f = mesh(new THREE.ConeGeometry(0.07, 0.24, 6), std(0xe9c27a), root);
+      f.rotation.z = Math.PI / 2;
+      f.castShadow = false;
+      return { f, r: 0.6 + i * 0.25, y: 0.35 + i * 0.32, s: 0.5 + i * 0.17, p: i * 2.1 };
+    });
+
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(14, 14), new THREE.ShadowMaterial({ opacity: 0.12 }));
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    scene.add(floor);
+    camera.position.y += 0.4;
+    camera.lookAt(0, 0.75, 0);
+
+    const shear = { x: 0, z: 0, vx: 0, vz: 0 };
+    const wave = (x, z, t) => 0.035 * Math.sin(x * 2.6 + t * 1.8) + 0.025 * Math.sin(z * 3.4 - t * 1.3) + 0.02 * Math.sin((x + z) * 4 + t * 2.4);
+    const M = new THREE.Matrix4();
+
+    canvas.addEventListener('pointerdown', (e) => {
+      const r = canvas.getBoundingClientRect();
+      const d = (e.clientX - r.left) / r.width - 0.5;
+      shear.vx += d * 1.4 + 0.2;
+      shear.vz -= d * 1.4 - 0.2;
+    });
+
+    return (t, dt) => {
+      shear.vx += (-38 * shear.x - 2.6 * shear.vx + 0.15 * Math.sin(t * 1.3)) * dt;
+      shear.vz += (-38 * shear.z - 2.6 * shear.vz + 0.12 * Math.cos(t * 1.1)) * dt;
+      shear.x += shear.vx * dt;
+      shear.z += shear.vz * dt;
+      const sq = -0.4 * Math.hypot(shear.x, shear.z);
+      M.set(1, shear.x, 0, 0, 0, 1 + sq, 0, 0, 0, shear.z, 1, 0, 0, 0, 0, 1);
+      root.matrix.copy(M);
+      root.matrixWorldNeedsUpdate = true;
+
+      const pos = water.attributes.position;
+      for (let i = 0; i < pos.count; i++) pos.array[i * 3 + 1] = wave(base[i * 3], base[i * 3 + 2], t);
+      pos.needsUpdate = true;
+      water.computeVertexNormals();
+
+      const sx = 0.25 * Math.sin(t * 0.25) - 0.1, sz = 0.65;
+      ship.position.set(sx, H + wave(sx, sz - 0.35, t), sz);
+      ship.rotation.z = 0.08 * Math.cos(sx * 2.6 + t * 1.8);
+      ship.rotation.x = 0.05 * Math.sin(t * 1.3);
+      hook.position.y = H + 0.85 + 0.12 * Math.sin(t * 0.9);
+
+      for (const o of fish) {
+        const a = t * o.s + o.p;
+        o.f.position.set(Math.cos(a) * o.r, o.y, Math.sin(a) * o.r * 0.8);
+        o.f.rotation.y = -a;
+      }
+      renderer.render(scene, camera);
+    };
+  })();
+
+  const cube = (() => {
+    const canvas = document.getElementById('cube');
+    const { renderer, scene, camera } = stage(canvas);
+    const N = 5;
+    const tileGeo = new THREE.BoxGeometry(1, 0.14, 1);
+    const tileA = std(0xf4f4f5), tileB = std(0xe4e4e7);
+    for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) {
+      mesh(tileGeo, (i + j) % 2 ? tileA : tileB, scene, i - 2, -0.07, j - 2).castShadow = false;
+    }
+    const cubeMat = std(0x2563eb, { roughness: 0.35 });
+    const box = mesh(new RoundedBoxGeometry(0.9, 0.9, 0.9, 4, 0.1), cubeMat, scene, 0, 0.45, 0);
+    camera.zoom = 0.88;
+    camera.updateProjectionMatrix();
+    camera.lookAt(0, 0.2, 0);
+
+    const pivot = new THREE.Object3D();
+    scene.add(pivot);
+    let cell = { x: 0, z: 0 }, last = null, move = null, wait = 0.4, queued = false;
+    const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+    const ease = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+
+    const begin = () => {
+      const ok = dirs.filter(([dx, dz]) => Math.abs(cell.x + dx) <= 2 && Math.abs(cell.z + dz) <= 2 && !(last && dx === -last[0] && dz === -last[1]));
+      const [dx, dz] = ok[Math.floor(Math.random() * ok.length)];
+      pivot.position.set(cell.x + dx * 0.45, 0, cell.z + dz * 0.45);
+      pivot.rotation.set(0, 0, 0);
+      pivot.updateMatrixWorld();
+      pivot.attach(box);
+      move = { dx, dz, k: 0 };
+    };
+
+    canvas.addEventListener('pointerdown', () => { if (!move) wait = 0; else queued = true; });
+
+    const tick = (dt) => {
+      if (!move) {
+        wait -= dt;
+        if (wait <= 0) begin();
+        return;
+      }
+      move.k = Math.min(1, move.k + dt / 0.55);
+      const a = (Math.PI / 2) * ease(move.k);
+      pivot.rotation.set(move.dz * a, 0, -move.dx * a);
+      if (move.k >= 1) {
+        scene.attach(box);
+        cell = { x: cell.x + move.dx, z: cell.z + move.dz };
+        last = [move.dx, move.dz];
+        box.position.set(cell.x, 0.45, cell.z);
+        box.rotation.set(0, 0, 0);
+        move = null;
+        wait = queued ? 0 : 0.45;
+        queued = false;
+      }
+    };
+
+    const recolor = () => {
+      const d = dark.matches;
+      tileA.color.set(d ? 0x18181b : 0xf4f4f5);
+      tileB.color.set(d ? 0x27272a : 0xe4e4e7);
+      cubeMat.color.set(d ? 0x60a5fa : 0x2563eb);
+    };
+    recolor();
+    dark.addEventListener('change', recolor);
+
+    return (t, dt) => {
+      tick(dt);
+      renderer.render(scene, camera);
+    };
+  })();
+
+  document.querySelectorAll('.side').forEach((s) => s.classList.add('ready'));
+
+  let prev = performance.now();
+  const frame = (now) => {
+    const dt = Math.min(0.05, (now - prev) / 1000);
+    prev = now;
+    const t = now / 1000;
+    jelly(t, dt);
+    cube(t, dt);
+    if (!still) requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+};
+
+start().catch(() => {});
+wide.addEventListener('change', () => start().catch(() => {}));
+</script>
 </body>
 </html>
