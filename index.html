@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>vuthelong — Resume</title>
+<title>Vu The Long — Resume</title>
 <meta name="description" content="Unity developer building editor tools, agent skills and interactive experiments.">
 <script>
 try {
@@ -116,6 +116,16 @@ h2 { margin: 0 0 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em
 .skills dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .chip { font-size: 13px; padding: 2px 9px; border-radius: 6px; background: var(--chip); border: 1px solid var(--line); }
 
+.contact { margin: 20px 0 0; }
+.reveal { padding: 6px 12px; }
+.info { display: grid; grid-template-columns: auto 1fr; gap: 6px 20px; margin: 0; font-size: 14px; animation: unblur 0.5s ease; }
+.info dt { color: var(--faint); }
+.info dd { margin: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+.info a { text-decoration: none; }
+.copy { appearance: none; border: 1px solid var(--line); background: transparent; color: var(--faint); border-radius: 5px; padding: 0 6px; font: 500 11px/18px Inter, ui-sans-serif, system-ui, sans-serif; cursor: pointer; }
+.copy:hover { color: var(--text); border-color: var(--faint); }
+@keyframes unblur { from { filter: blur(6px); opacity: 0; } to { filter: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .info { animation: none; } }
 footer { margin-top: 64px; font-size: 13px; color: var(--faint); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 kbd { font: 500 11px/1 "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; padding: 3px 6px; border-radius: 5px; border: 1px solid var(--line); border-bottom-width: 2px; background: var(--chip); color: var(--text); }
 
@@ -218,13 +228,21 @@ dialog form { margin-top: 20px; text-align: right; }
 <header>
   <div class="model" data-model="cube" data-side="right" data-hint="click to roll" data-hint-vi="bấm để lăn"></div>
   <div>
-    <h1 id="name" title="Click me">vuthelong</h1>
+    <h1 id="name" title="Click me">Vu The Long</h1>
     <p class="role" data-vi="Lập trình viên Unity · Công cụ Editor">Unity Developer · Editor Tooling</p>
   </div>
   <nav class="links">
     <a href="https://github.com/vuthelong">github.com/vuthelong</a>
   </nav>
 </header>
+
+<div class="contact">
+  <button class="btn reveal" id="reveal-btn" type="button" aria-controls="info">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+    <span data-vi="Hiện thông tin liên hệ">Show contact info</span>
+  </button>
+  <dl class="info" id="info" hidden></dl>
+</div>
 
 <p class="summary" data-vi="Lập trình viên Unity làm việc với Unity 6 và C#. Tôi làm công cụ editor giúp công việc hằng ngày bớt vướng víu, môi trường procedural và rendering, cùng agent skill AI cho phát triển game. Ngoài Unity, tôi cũng làm app macOS bằng Swift, WebGPU và Node.js.">Unity developer working in Unity 6 and C#. I build editor tools that remove friction from daily work, procedural environments and rendering, and AI agent skills for game development. Comfortable outside Unity too: macOS apps in Swift, WebGPU, and Node.js.</p>
 
@@ -405,6 +423,57 @@ dialog form { margin-top: 20px; text-align: right; }
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toastEl.classList.remove('on'), 2200);
   };
+
+  const SEALED = 'DVYIQhBHSVdUShwDHwAGRkROAVAVGxoDAA8IEgIPQUVfHUFcRUBPSQ9XXVNfGlZWDx4KHRIbEQNWVUR2ERkNRB5LEBoARwEQUVZSBBEfXlBfUT0MRWNdWR4WIB0JWVIrEhhPGA==';
+  const unseal = () => {
+    const key = new TextEncoder().encode('vtl-resume-2026');
+    const raw = Uint8Array.from(atob(SEALED), (c, i) => c.charCodeAt(0) ^ key[i % key.length]);
+    return JSON.parse(new TextDecoder().decode(raw));
+  };
+  const revealBtn = document.getElementById('reveal-btn');
+  const info = document.getElementById('info');
+  const label = (en, vi) => {
+    const el = document.createElement('dt');
+    el.dataset.en = en;
+    el.dataset.vi = vi;
+    el.textContent = root.lang === 'vi' ? vi : en;
+    return el;
+  };
+  const copyBtn = (value) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'copy';
+    b.dataset.en = 'Copy';
+    b.dataset.vi = 'Copy';
+    b.textContent = 'Copy';
+    b.addEventListener('click', () => {
+      navigator.clipboard?.writeText(value).then(() => toast('Copied', 'Đã copy'), () => {});
+    });
+    return b;
+  };
+  const row = (en, vi, node, value) => {
+    const dd = document.createElement('dd');
+    dd.append(node);
+    if (value) dd.append(copyBtn(value));
+    info.append(label(en, vi), dd);
+  };
+  const link = (href, text) => {
+    const a = document.createElement('a');
+    a.href = href;
+    a.textContent = text;
+    return a;
+  };
+  revealBtn.addEventListener('click', (e) => {
+    if (!e.isTrusted) return;
+    const d = unseal();
+    const local = d.phone.replace(/^0/, '');
+    row('Born', 'Ngày sinh', document.createTextNode(d.dob));
+    row('Phone', 'Điện thoại', link(`tel:+84${local}`, d.phone.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3')), d.phone);
+    row('Email', 'Email', link(`mailto:${d.email}`, d.email), d.email);
+    row('Location', 'Địa chỉ', document.createTextNode(d.address));
+    info.hidden = false;
+    revealBtn.remove();
+  });
 
   const help = document.getElementById('help');
   const jump = () => {
