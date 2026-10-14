@@ -82,15 +82,14 @@ h2 { margin: 0 0 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em
 
 footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
 
-.side { display: none; position: fixed; top: 0; bottom: 0; width: calc((100vw - 760px) / 2); padding: 0 24px; pointer-events: none; }
-.side.left { left: 0; align-items: flex-start; padding-top: 14vh; }
-.side.right { right: 0; align-items: flex-end; padding-bottom: 10vh; }
-.side figure { margin: 0 auto; width: min(340px, 100%); pointer-events: auto; opacity: 0; transition: opacity 0.8s ease; }
-.side.ready figure { opacity: 1; }
-.side canvas { display: block; width: 100%; aspect-ratio: 1; cursor: pointer; touch-action: none; }
-.side figcaption { margin-top: 4px; text-align: center; font-size: 12px; color: var(--faint); }
-.side figcaption a { text-decoration: none; color: var(--muted); }
-@media (min-width: 1240px) { .side { display: flex; } }
+header, section, .item { position: relative; }
+.model { display: none; position: absolute; top: -12px; width: min(220px, calc((100vw - 712px) / 2 - 72px)); aspect-ratio: 1; cursor: pointer; touch-action: manipulation; }
+.model[data-side="left"] { right: calc(100% + 56px); }
+.model[data-side="right"] { left: calc(100% + 56px); }
+.model::after { content: attr(data-hint); position: absolute; left: 0; right: 0; bottom: -10px; text-align: center; font-size: 11px; color: var(--faint); }
+#stage { display: none; position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; opacity: 0; transition: opacity 0.8s ease; }
+#stage.ready { opacity: 1; }
+@media (min-width: 1240px) { .model, #stage { display: block; } }
 
 @media (max-width: 560px) {
   main { padding: 48px 16px 72px; }
@@ -106,7 +105,7 @@ footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
   @page { size: A4; margin: 14mm 16mm; }
   body { font-size: 11pt; }
   main { max-width: none; padding: 0; }
-  .print, .side { display: none !important; }
+  .print, .model, #stage { display: none !important; }
   section { margin-top: 28px; break-inside: auto; }
   .item { break-inside: avoid; padding: 10px 0; }
   a { text-decoration: none; }
@@ -118,6 +117,7 @@ footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
 <main>
 
 <header>
+  <div class="model" data-model="cube" data-side="right" data-hint="click to roll"></div>
   <div>
     <h1>vuthelong</h1>
     <p class="role">Unity Developer · Editor Tooling</p>
@@ -141,6 +141,7 @@ footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
   <h2>Projects</h2>
 
   <div class="item">
+    <div class="model" data-model="env" data-side="left" data-hint="click to skip time"></div>
     <h3>EnvironmentPrototype<span class="tag">private</span></h3>
     <time>Oct 2026</time>
     <p class="meta">Unity 6 · URP · C# · HLSL</p>
@@ -154,6 +155,7 @@ footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
   </div>
 
   <div class="item">
+    <div class="model" data-model="ktools" data-side="right" data-hint="click to scatter"></div>
     <h3>Kingfisher K-Tools<span class="tag">8 tools</span></h3>
     <time>Aug – Sep 2026</time>
     <p class="meta">Unity Editor · C# · UPM</p>
@@ -175,6 +177,7 @@ footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
   </div>
 
   <div class="item">
+    <div class="model" data-model="library" data-side="left" data-hint="71 skills · click to restack"></div>
     <h3><a href="https://github.com/vuthelong/unity-csharp-skills">unity-csharp-skills</a></h3>
     <time>Oct 2026</time>
     <p class="meta">Claude Code plugins · Unity 6 · C#</p>
@@ -185,6 +188,7 @@ footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
   </div>
 
   <div class="item">
+    <div class="model" data-model="harbor" data-side="right" data-hint="click to poke"></div>
     <h3><a href="https://github.com/vuthelong/harbor-jelly">Harbor Jelly</a></h3>
     <time>Oct 2026</time>
     <p class="meta">WebGPU · JavaScript · Playwright</p>
@@ -195,6 +199,7 @@ footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
   </div>
 
   <div class="item">
+    <div class="model" data-model="mac" data-side="left" data-hint="click to copy"></div>
     <h3><a href="https://github.com/vuthelong/MacClipboard">MacClipboard</a></h3>
     <time>Aug 2026</time>
     <p class="meta">Swift · SwiftUI · AppKit</p>
@@ -205,6 +210,7 @@ footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
   </div>
 
   <div class="item">
+    <div class="model" data-model="loldle" data-side="right" data-hint="click to replay"></div>
     <h3><a href="https://github.com/vuthelong/loldle-discord-bot">LoLdle Discord Bot</a></h3>
     <time>Aug 2026</time>
     <p class="meta">Node.js · discord.js</p>
@@ -215,6 +221,7 @@ footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
 </section>
 
 <section>
+  <div class="model" data-model="stack" data-side="left" data-hint="click to expand"></div>
   <h2>Skills</h2>
   <dl class="skills">
     <dt>Languages</dt>
@@ -232,18 +239,7 @@ footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
 
 </main>
 
-<aside class="side left" aria-hidden="true">
-  <figure>
-    <canvas id="jelly"></canvas>
-    <figcaption><a href="https://github.com/vuthelong/harbor-jelly">harbor-jelly</a> · click to poke</figcaption>
-  </figure>
-</aside>
-<aside class="side right" aria-hidden="true">
-  <figure>
-    <canvas id="cube"></canvas>
-    <figcaption><a href="https://github.com/vuthelong/cube">cube</a> · click to roll</figcaption>
-  </figure>
-</aside>
+<canvas id="stage" aria-hidden="true"></canvas>
 
 <script type="importmap">
 { "imports": {
@@ -263,35 +259,18 @@ const start = async () => {
   const THREE = await import('three');
   const { RoundedBoxGeometry } = await import('three/addons/geometries/RoundedBoxGeometry.js');
 
-  const stage = (canvas) => {
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-3, 3, 3, -3, 0.1, 100);
-    camera.position.set(10, 8.2, 10);
-    camera.lookAt(0, 0, 0);
-    scene.add(new THREE.HemisphereLight(0xffffff, 0x9a9183, 1.6));
-    const sun = new THREE.DirectionalLight(0xffffff, 2.2);
-    sun.position.set(4, 9, 3);
-    sun.castShadow = true;
-    sun.shadow.mapSize.set(1024, 1024);
-    sun.shadow.camera.left = sun.shadow.camera.bottom = -5;
-    sun.shadow.camera.right = sun.shadow.camera.top = 5;
-    sun.shadow.radius = 4;
-    scene.add(sun);
-    const resize = () => {
-      const w = canvas.clientWidth, h = canvas.clientHeight;
-      if (!w || !h) return;
-      renderer.setSize(w, h, false);
-    };
-    new ResizeObserver(resize).observe(canvas);
-    resize();
-    return { renderer, scene, camera };
-  };
+  const canvas = document.getElementById('stage');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.setScissorTest(true);
 
+  const ease = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+  const clamp01 = (k) => Math.min(1, Math.max(0, k));
   const std = (color, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.55, ...extra });
+  const rbox = (w, h, d, r = 0.08) => new RoundedBoxGeometry(w, h, d, 3, r);
   const mesh = (geo, mat, parent, x = 0, y = 0, z = 0) => {
     const m = new THREE.Mesh(geo, mat);
     m.position.set(x, y, z);
@@ -299,178 +278,458 @@ const start = async () => {
     parent.add(m);
     return m;
   };
+  const spring = (s, dt, k = 30, c = 4) => {
+    s.v += (-k * s.x - c * s.v) * dt;
+    s.x += s.v * dt;
+  };
 
-  const jelly = (() => {
-    const canvas = document.getElementById('jelly');
-    const { renderer, scene, camera } = stage(canvas);
-    const S = 3, H = 1.5;
-    const root = new THREE.Group();
-    root.matrixAutoUpdate = false;
-    scene.add(root);
-
-    const body = mesh(new THREE.BoxGeometry(S, H, S), std(0x3fa896, { transparent: true, opacity: 0.78, roughness: 0.2, depthWrite: false }), root, 0, H / 2, 0);
-    body.castShadow = false;
-    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(body.geometry), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 }));
-    body.add(edges);
-
-    const water = new THREE.PlaneGeometry(S, S - 0.7, 36, 28);
-    water.rotateX(-Math.PI / 2);
-    const waterMesh = mesh(water, std(0x8fd3bf, { roughness: 0.15, flatShading: true }), root, 0, H, 0.35);
-    const base = water.attributes.position.array.slice();
-
-    const quayMat = std(0xe7dfcf);
-    mesh(new THREE.BoxGeometry(S, 0.18, 0.7), quayMat, root, 0, H + 0.02, -S / 2 + 0.35);
-    const palette = [0xe9c27a, 0xefa9b5, 0xb9a6d9, 0xc9e4b8, 0xf6c9a8, 0xa9bff0];
-    [[-1.15, 0], [-1.15, 1], [-0.65, 0], [-0.15, 0], [-0.15, 1], [0.35, 0]].forEach(([x, lvl], i) => {
-      mesh(new THREE.BoxGeometry(0.44, 0.22, 0.3), std(palette[i]), root, x, H + 0.22 + lvl * 0.22, -S / 2 + 0.33);
-    });
-    const ink = std(0x2b2620);
-    mesh(new THREE.BoxGeometry(0.06, 1.0, 0.06), ink, root, 1.1, H + 0.6, -S / 2 + 0.3);
-    mesh(new THREE.BoxGeometry(0.06, 0.06, 1.3), ink, root, 1.1, H + 1.08, -S / 2 + 0.9);
-    const hook = mesh(new THREE.BoxGeometry(0.02, 0.4, 0.02), ink, root, 1.1, H + 0.85, 0.15);
-
-    const ship = new THREE.Group();
-    root.add(ship);
-    mesh(new THREE.BoxGeometry(1.5, 0.2, 0.5), std(0x3b3530), ship, 0, 0.06, 0);
-    mesh(new THREE.BoxGeometry(0.28, 0.32, 0.4), std(0xfbf8f1), ship, 0.55, 0.32, 0);
-    [[-0.5, 0xe9c27a], [-0.18, 0x2f9c8c], [0.14, 0xefa9b5]].forEach(([x, c]) => mesh(new THREE.BoxGeometry(0.28, 0.2, 0.36), std(c), ship, x, 0.26, 0));
-
-    const fish = [0, 1, 2].map((i) => {
-      const f = mesh(new THREE.ConeGeometry(0.07, 0.24, 6), std(0xe9c27a), root);
-      f.rotation.z = Math.PI / 2;
-      f.castShadow = false;
-      return { f, r: 0.6 + i * 0.25, y: 0.35 + i * 0.32, s: 0.5 + i * 0.17, p: i * 2.1 };
-    });
-
-    const floor = new THREE.Mesh(new THREE.PlaneGeometry(14, 14), new THREE.ShadowMaterial({ opacity: 0.12 }));
-    floor.rotation.x = -Math.PI / 2;
-    floor.receiveShadow = true;
-    scene.add(floor);
-    camera.position.y += 0.4;
-    camera.lookAt(0, 0.75, 0);
-
-    const shear = { x: 0, z: 0, vx: 0, vz: 0 };
-    const wave = (x, z, t) => 0.035 * Math.sin(x * 2.6 + t * 1.8) + 0.025 * Math.sin(z * 3.4 - t * 1.3) + 0.02 * Math.sin((x + z) * 4 + t * 2.4);
-    const M = new THREE.Matrix4();
-
-    canvas.addEventListener('pointerdown', (e) => {
-      const r = canvas.getBoundingClientRect();
-      const d = (e.clientX - r.left) / r.width - 0.5;
-      shear.vx += d * 1.4 + 0.2;
-      shear.vz -= d * 1.4 - 0.2;
-    });
-
-    return (t, dt) => {
-      shear.vx += (-38 * shear.x - 2.6 * shear.vx + 0.15 * Math.sin(t * 1.3)) * dt;
-      shear.vz += (-38 * shear.z - 2.6 * shear.vz + 0.12 * Math.cos(t * 1.1)) * dt;
-      shear.x += shear.vx * dt;
-      shear.z += shear.vz * dt;
-      const sq = -0.4 * Math.hypot(shear.x, shear.z);
-      M.set(1, shear.x, 0, 0, 0, 1 + sq, 0, 0, 0, shear.z, 1, 0, 0, 0, 0, 1);
-      root.matrix.copy(M);
-      root.matrixWorldNeedsUpdate = true;
-
-      const pos = water.attributes.position;
-      for (let i = 0; i < pos.count; i++) pos.array[i * 3 + 1] = wave(base[i * 3], base[i * 3 + 2], t);
-      pos.needsUpdate = true;
-      water.computeVertexNormals();
-
-      const sx = 0.25 * Math.sin(t * 0.25) - 0.1, sz = 0.65;
-      ship.position.set(sx, H + wave(sx, sz - 0.35, t), sz);
-      ship.rotation.z = 0.08 * Math.cos(sx * 2.6 + t * 1.8);
-      ship.rotation.x = 0.05 * Math.sin(t * 1.3);
-      hook.position.y = H + 0.85 + 0.12 * Math.sin(t * 0.9);
-
-      for (const o of fish) {
-        const a = t * o.s + o.p;
-        o.f.position.set(Math.cos(a) * o.r, o.y, Math.sin(a) * o.r * 0.8);
-        o.f.rotation.y = -a;
-      }
-      renderer.render(scene, camera);
-    };
-  })();
-
-  const cube = (() => {
-    const canvas = document.getElementById('cube');
-    const { renderer, scene, camera } = stage(canvas);
-    const N = 5;
-    const tileGeo = new THREE.BoxGeometry(1, 0.14, 1);
-    const tileA = std(0xf4f4f5), tileB = std(0xe4e4e7);
-    for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) {
-      mesh(tileGeo, (i + j) % 2 ? tileA : tileB, scene, i - 2, -0.07, j - 2).castShadow = false;
-    }
-    const cubeMat = std(0x2563eb, { roughness: 0.35 });
-    const box = mesh(new RoundedBoxGeometry(0.9, 0.9, 0.9, 4, 0.1), cubeMat, scene, 0, 0.45, 0);
-    camera.zoom = 0.88;
+  const world = ({ size = 3, target = [0, 0, 0], shadow = 0.12, zoom = 1 } = {}) => {
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-size, size, size, -size, 0.1, 100);
+    camera.position.set(10 + target[0], 8.2 + target[1], 10 + target[2]);
+    camera.zoom = zoom;
     camera.updateProjectionMatrix();
-    camera.lookAt(0, 0.2, 0);
+    camera.lookAt(...target);
+    const hemi = new THREE.HemisphereLight(0xffffff, 0x9a9183, 1.6);
+    scene.add(hemi);
+    const sun = new THREE.DirectionalLight(0xffffff, 2.2);
+    sun.position.set(4, 9, 3);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(512, 512);
+    Object.assign(sun.shadow.camera, { left: -5, right: 5, top: 5, bottom: -5 });
+    sun.shadow.camera.updateProjectionMatrix();
+    sun.shadow.radius = 4;
+    scene.add(sun);
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(14, 14), new THREE.ShadowMaterial({ opacity: shadow }));
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+    return { scene, camera, hemi, sun, ground };
+  };
 
-    const pivot = new THREE.Object3D();
-    scene.add(pivot);
-    let cell = { x: 0, z: 0 }, last = null, move = null, wait = 0.4, queued = false;
-    const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-    const ease = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
-
-    const begin = () => {
-      const ok = dirs.filter(([dx, dz]) => Math.abs(cell.x + dx) <= 2 && Math.abs(cell.z + dz) <= 2 && !(last && dx === -last[0] && dz === -last[1]));
-      const [dx, dz] = ok[Math.floor(Math.random() * ok.length)];
-      pivot.position.set(cell.x + dx * 0.45, 0, cell.z + dz * 0.45);
-      pivot.rotation.set(0, 0, 0);
-      pivot.updateMatrixWorld();
-      pivot.attach(box);
-      move = { dx, dz, k: 0 };
-    };
-
-    canvas.addEventListener('pointerdown', () => { if (!move) wait = 0; else queued = true; });
-
-    const tick = (dt) => {
-      if (!move) {
-        wait -= dt;
-        if (wait <= 0) begin();
-        return;
+  const builders = {
+    cube() {
+      const { scene, camera } = world({ zoom: 0.88, target: [0, 0.2, 0] });
+      const tileGeo = new THREE.BoxGeometry(1, 0.14, 1);
+      const tileA = std(0xf4f4f5), tileB = std(0xe4e4e7);
+      for (let i = 0; i < 5; i++) for (let j = 0; j < 5; j++) {
+        mesh(tileGeo, (i + j) % 2 ? tileA : tileB, scene, i - 2, -0.07, j - 2).castShadow = false;
       }
-      move.k = Math.min(1, move.k + dt / 0.55);
-      const a = (Math.PI / 2) * ease(move.k);
-      pivot.rotation.set(move.dz * a, 0, -move.dx * a);
-      if (move.k >= 1) {
-        scene.attach(box);
-        cell = { x: cell.x + move.dx, z: cell.z + move.dz };
-        last = [move.dx, move.dz];
-        box.position.set(cell.x, 0.45, cell.z);
-        box.rotation.set(0, 0, 0);
-        move = null;
-        wait = queued ? 0 : 0.45;
-        queued = false;
+      const cubeMat = std(0x2563eb, { roughness: 0.35 });
+      const box = mesh(rbox(0.9, 0.9, 0.9, 0.1), cubeMat, scene, 0, 0.45, 0);
+      const pivot = new THREE.Object3D();
+      scene.add(pivot);
+      const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+      let cell = { x: 0, z: 0 }, last = null, move = null, wait = 0.4, queued = false;
+      const begin = () => {
+        const ok = dirs.filter(([dx, dz]) => Math.abs(cell.x + dx) <= 2 && Math.abs(cell.z + dz) <= 2 && !(last && dx === -last[0] && dz === -last[1]));
+        const [dx, dz] = ok[Math.floor(Math.random() * ok.length)];
+        pivot.position.set(cell.x + dx * 0.45, 0, cell.z + dz * 0.45);
+        pivot.rotation.set(0, 0, 0);
+        pivot.updateMatrixWorld();
+        pivot.attach(box);
+        move = { dx, dz, k: 0 };
+      };
+      return {
+        scene, camera,
+        poke() { if (!move) wait = 0; else queued = true; },
+        recolor(d) {
+          tileA.color.set(d ? 0x18181b : 0xf4f4f5);
+          tileB.color.set(d ? 0x27272a : 0xe4e4e7);
+          cubeMat.color.set(d ? 0x60a5fa : 0x2563eb);
+        },
+        update(t, dt) {
+          if (!move) {
+            wait -= dt;
+            if (wait <= 0) begin();
+            return;
+          }
+          move.k = Math.min(1, move.k + dt / 0.55);
+          const a = (Math.PI / 2) * ease(move.k);
+          pivot.rotation.set(move.dz * a, 0, -move.dx * a);
+          if (move.k >= 1) {
+            scene.attach(box);
+            cell = { x: cell.x + move.dx, z: cell.z + move.dz };
+            last = [move.dx, move.dz];
+            box.position.set(cell.x, 0.45, cell.z);
+            box.rotation.set(0, 0, 0);
+            move = null;
+            wait = queued ? 0 : 0.45;
+            queued = false;
+          }
+        },
+      };
+    },
+
+    env() {
+      const { scene, camera, sun, hemi } = world({ target: [0, 0.6, 0], zoom: 1.2 });
+      const S = 3.2;
+      mesh(rbox(S, 0.5, S, 0.08), std(0xb8946a), scene, 0, -0.25, 0);
+      const grass = std(0x9cc58a);
+      mesh(rbox(S, 0.12, S, 0.05), grass, scene, 0, 0.02, 0);
+      [[-0.75, -0.7, 0.85], [0.55, -0.95, 0.65]].forEach(([x, z, r]) => {
+        const h = mesh(new THREE.SphereGeometry(r, 24, 12), grass, scene, x, 0.05, z);
+        h.scale.y = 0.38;
+      });
+      const bark = std(0x7a5a3c), leaf = std(0x4f8a5b);
+      [[-1.15, 0.85], [-0.7, 1.2], [1.15, -1.15], [-1.25, -0.2]].forEach(([x, z], i) => {
+        const s = 0.8 + (i % 2) * 0.3;
+        mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.3 * s, 6), bark, scene, x, 0.15 * s + 0.08, z);
+        mesh(new THREE.ConeGeometry(0.24 * s, 0.6 * s, 7), leaf, scene, x, 0.55 * s + 0.08, z);
+      });
+      const wood = std(0x8a6a4f);
+      for (let x = -1.3; x <= 0.35; x += 0.33) mesh(new THREE.BoxGeometry(0.06, 0.34, 0.06), wood, scene, x, 0.25, 1.35);
+      [0.2, 0.33].forEach((y) => mesh(new THREE.BoxGeometry(1.7, 0.035, 0.035), wood, scene, -0.47, y, 1.35));
+      const brick = std(0xd9c7a7, { roughness: 0.8 });
+      for (let row = 0; row < 3; row++) for (let k = 0; k < 5; k++) {
+        const z = -0.35 + k * 0.32 + (row % 2) * 0.16;
+        if (z > 1.2) continue;
+        mesh(rbox(0.2, 0.13, 0.3, 0.06), brick, scene, 1.3, 0.14 + row * 0.135, z);
       }
-    };
+      const glow = std(0x3f3f46, { emissive: 0xfbbf24, emissiveIntensity: 0 });
+      [[0.55, 1.35], [1.3, 1.35]].forEach(([x, z]) => {
+        mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.5, 6), std(0x3f3f46), scene, x, 0.33, z);
+        mesh(new THREE.BoxGeometry(0.1, 0.12, 0.1), glow, scene, x, 0.62, z);
+      });
+      const sunBall = mesh(new THREE.SphereGeometry(0.2, 20, 12), new THREE.MeshBasicMaterial({ color: 0xfbbf24 }), scene);
+      const moonBall = mesh(new THREE.SphereGeometry(0.14, 20, 12), new THREE.MeshBasicMaterial({ color: 0xcbd5e1 }), scene);
+      sunBall.castShadow = moonBall.castShadow = false;
+      const starPos = [];
+      for (let i = 0; i < 90; i++) {
+        const a = Math.random() * Math.PI * 2, e = 0.15 + Math.random() * 1.2, r = 4.5;
+        starPos.push(Math.cos(a) * Math.cos(e) * r, Math.sin(e) * r, Math.sin(a) * Math.cos(e) * r - 1);
+      }
+      const starGeo = new THREE.BufferGeometry();
+      starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
+      const starMat = new THREE.PointsMaterial({ color: 0x64748b, size: 2, sizeAttenuation: false, transparent: true, opacity: 0 });
+      scene.add(new THREE.Points(starGeo, starMat));
+      const warm = new THREE.Color(0xffa95e), white = new THREE.Color(0xffffff), night = new THREE.Color(0x9db4ff);
+      let phase = 0.9, boost = 0;
+      return {
+        scene, camera,
+        poke() { boost = 7; },
+        recolor(d) { starMat.color.set(d ? 0xffffff : 0x64748b); },
+        update(t, dt) {
+          phase += dt * (0.45 + boost);
+          boost *= Math.pow(0.08, dt);
+          const c = Math.cos(phase), s = Math.sin(phase);
+          sunBall.position.set(c * 3.1, s * 2.6 + 0.4, -1.7);
+          moonBall.position.set(-c * 3.1, -s * 2.6 + 0.4, -1.7);
+          const day = clamp01((s + 0.12) / 0.4);
+          sunBall.visible = s > -0.2;
+          moonBall.visible = s < 0.2;
+          sun.position.copy(day > 0.02 ? sunBall.position : moonBall.position).multiplyScalar(2);
+          sun.intensity = 0.35 + 2.1 * day;
+          sun.color.copy(day > 0.02 ? warm.clone().lerp(white, clamp01(s / 0.6)) : night);
+          hemi.intensity = 0.55 + 1.1 * day;
+          starMat.opacity = 1 - day;
+          glow.emissiveIntensity = (1 - day) * 2.2;
+        },
+      };
+    },
 
-    const recolor = () => {
-      const d = dark.matches;
-      tileA.color.set(d ? 0x18181b : 0xf4f4f5);
-      tileB.color.set(d ? 0x27272a : 0xe4e4e7);
-      cubeMat.color.set(d ? 0x60a5fa : 0x2563eb);
-    };
-    recolor();
-    dark.addEventListener('change', recolor);
+    ktools() {
+      const { scene, camera } = world({ target: [0, 0.6, 0], zoom: 1.2 });
+      const shape = new THREE.Shape();
+      const teeth = 10, n = teeth * 4;
+      for (let i = 0; i <= n; i++) {
+        const a = (i / n) * Math.PI * 2, rad = i % 4 < 2 ? 0.78 : 0.6;
+        i ? shape.lineTo(Math.cos(a) * rad, Math.sin(a) * rad) : shape.moveTo(Math.cos(a) * rad, Math.sin(a) * rad);
+      }
+      const hole = new THREE.Path();
+      hole.absarc(0, 0, 0.22, 0, Math.PI * 2, true);
+      shape.holes.push(hole);
+      const gearGeo = new THREE.ExtrudeGeometry(shape, { depth: 0.26, bevelEnabled: true, bevelSize: 0.03, bevelThickness: 0.03, bevelSegments: 2 });
+      gearGeo.center();
+      gearGeo.rotateX(-Math.PI / 2);
+      const gearMat = std(0x52525b, { roughness: 0.4, metalness: 0.3 });
+      const gear = mesh(gearGeo, gearMat, scene, 0, 0.6, 0);
+      const palette = [0xf59e0b, 0xef4444, 0x8b5cf6, 0x3b82f6, 0x10b981, 0xec4899, 0x14b8a6, 0xf97316];
+      const sats = palette.map((c) => mesh(rbox(0.42, 0.42, 0.42, 0.09), std(c, { roughness: 0.4 }), scene));
+      const lineGeo = new THREE.BufferGeometry();
+      lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(new Array(sats.length * 6).fill(0), 3));
+      const lineMat = new THREE.LineBasicMaterial({ color: 0xa1a1aa, transparent: true, opacity: 0.6 });
+      scene.add(new THREE.LineSegments(lineGeo, lineMat));
+      const spread = { x: 0, v: 0 };
+      return {
+        scene, camera,
+        poke() { spread.v += 3.2; },
+        recolor(d) {
+          gearMat.color.set(d ? 0xa1a1aa : 0x52525b);
+          lineMat.color.set(d ? 0x52525b : 0xa1a1aa);
+        },
+        update(t, dt) {
+          spring(spread, dt, 26, 3.2);
+          gear.rotation.y = t * 0.45;
+          const p = lineGeo.attributes.position.array;
+          sats.forEach((m, i) => {
+            const a = (i / sats.length) * Math.PI * 2 + t * 0.25, r = 1.75 + spread.x;
+            m.position.set(Math.cos(a) * r, 0.6 + 0.22 * Math.sin(t * 1.5 + i), Math.sin(a) * r);
+            m.rotation.set(t * 0.6 + i, t * 0.4 + i, 0);
+            p.set([0, 0.6, 0, m.position.x, m.position.y, m.position.z], i * 6);
+          });
+          lineGeo.attributes.position.needsUpdate = true;
+        },
+      };
+    },
 
-    return (t, dt) => {
-      tick(dt);
-      renderer.render(scene, camera);
-    };
-  })();
+    library() {
+      const { scene, camera } = world({ target: [0, 0.7, 0], zoom: 1.3 });
+      const counts = [3, 7, 9, 7, 4, 9, 6, 5, 17, 4];
+      const geo = rbox(0.56, 0.085, 0.56, 0.03);
+      const tiles = [];
+      counts.forEach((n, i) => {
+        const col = i % 5, row = Math.floor(i / 5);
+        const x = (col - 2) * 0.72, z = (row - 0.5) * 0.9;
+        const mat = std(new THREE.Color().setHSL(0.6 - i * 0.05, 0.6, 0.62), { roughness: 0.45 });
+        for (let k = 0; k < n; k++) {
+          const m = mesh(geo, mat, scene, x, 0, z);
+          tiles.push({ m, y: 0.05 + k * 0.1, delay: i * 0.12 + k * 0.045 });
+        }
+      });
+      let t0 = null;
+      return {
+        scene, camera,
+        poke() { t0 = null; },
+        update(t) {
+          if (t0 === null) t0 = t;
+          const e = t - t0;
+          for (const o of tiles) {
+            const p = clamp01((e - o.delay) / 0.5);
+            o.m.visible = p > 0;
+            o.m.position.y = o.y + (1 - ease(p)) * 2.6;
+          }
+        },
+      };
+    },
 
-  document.querySelectorAll('.side').forEach((s) => s.classList.add('ready'));
+    harbor() {
+      const { scene, camera } = world({ target: [0, 0.75, 0] });
+      camera.position.y += 0.4;
+      camera.lookAt(0, 0.75, 0);
+      const S = 3, H = 1.5;
+      const root = new THREE.Group();
+      root.matrixAutoUpdate = false;
+      scene.add(root);
+      const body = mesh(new THREE.BoxGeometry(S, H, S), std(0x3fa896, { transparent: true, opacity: 0.78, roughness: 0.2, depthWrite: false }), root, 0, H / 2, 0);
+      body.castShadow = false;
+      body.add(new THREE.LineSegments(new THREE.EdgesGeometry(body.geometry), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 })));
+      const water = new THREE.PlaneGeometry(S, S - 0.7, 36, 28);
+      water.rotateX(-Math.PI / 2);
+      mesh(water, std(0x8fd3bf, { roughness: 0.15, flatShading: true }), root, 0, H, 0.35);
+      const base = water.attributes.position.array.slice();
+      mesh(new THREE.BoxGeometry(S, 0.18, 0.7), std(0xe7dfcf), root, 0, H + 0.02, -S / 2 + 0.35);
+      const palette = [0xe9c27a, 0xefa9b5, 0xb9a6d9, 0xc9e4b8, 0xf6c9a8, 0xa9bff0];
+      [[-1.15, 0], [-1.15, 1], [-0.65, 0], [-0.15, 0], [-0.15, 1], [0.35, 0]].forEach(([x, lvl], i) => {
+        mesh(new THREE.BoxGeometry(0.44, 0.22, 0.3), std(palette[i]), root, x, H + 0.22 + lvl * 0.22, -S / 2 + 0.33);
+      });
+      const ink = std(0x2b2620);
+      mesh(new THREE.BoxGeometry(0.06, 1.0, 0.06), ink, root, 1.1, H + 0.6, -S / 2 + 0.3);
+      mesh(new THREE.BoxGeometry(0.06, 0.06, 1.3), ink, root, 1.1, H + 1.08, -S / 2 + 0.9);
+      const hook = mesh(new THREE.BoxGeometry(0.02, 0.4, 0.02), ink, root, 1.1, H + 0.85, 0.15);
+      const ship = new THREE.Group();
+      root.add(ship);
+      mesh(new THREE.BoxGeometry(1.5, 0.2, 0.5), std(0x3b3530), ship, 0, 0.06, 0);
+      mesh(new THREE.BoxGeometry(0.28, 0.32, 0.4), std(0xfbf8f1), ship, 0.55, 0.32, 0);
+      [[-0.5, 0xe9c27a], [-0.18, 0x2f9c8c], [0.14, 0xefa9b5]].forEach(([x, c]) => mesh(new THREE.BoxGeometry(0.28, 0.2, 0.36), std(c), ship, x, 0.26, 0));
+      const fish = [0, 1, 2].map((i) => {
+        const f = mesh(new THREE.ConeGeometry(0.07, 0.24, 6), std(0xe9c27a), root);
+        f.rotation.z = Math.PI / 2;
+        f.castShadow = false;
+        return { f, r: 0.6 + i * 0.25, y: 0.35 + i * 0.32, s: 0.5 + i * 0.17, p: i * 2.1 };
+      });
+      const shear = { x: 0, z: 0, vx: 0, vz: 0 };
+      const wave = (x, z, t) => 0.035 * Math.sin(x * 2.6 + t * 1.8) + 0.025 * Math.sin(z * 3.4 - t * 1.3) + 0.02 * Math.sin((x + z) * 4 + t * 2.4);
+      return {
+        scene, camera,
+        poke(e, el) {
+          const r = el.getBoundingClientRect();
+          const d = (e.clientX - r.left) / r.width - 0.5;
+          shear.vx += d * 1.4 + 0.2;
+          shear.vz -= d * 1.4 - 0.2;
+        },
+        update(t, dt) {
+          shear.vx += (-38 * shear.x - 2.6 * shear.vx + 0.15 * Math.sin(t * 1.3)) * dt;
+          shear.vz += (-38 * shear.z - 2.6 * shear.vz + 0.12 * Math.cos(t * 1.1)) * dt;
+          shear.x += shear.vx * dt;
+          shear.z += shear.vz * dt;
+          root.matrix.set(1, shear.x, 0, 0, 0, 1 - 0.4 * Math.hypot(shear.x, shear.z), 0, 0, 0, shear.z, 1, 0, 0, 0, 0, 1);
+          root.matrixWorldNeedsUpdate = true;
+          const pos = water.attributes.position;
+          for (let i = 0; i < pos.count; i++) pos.array[i * 3 + 1] = wave(base[i * 3], base[i * 3 + 2], t);
+          pos.needsUpdate = true;
+          water.computeVertexNormals();
+          const sx = 0.25 * Math.sin(t * 0.25) - 0.1, sz = 0.65;
+          ship.position.set(sx, H + wave(sx, sz - 0.35, t), sz);
+          ship.rotation.z = 0.08 * Math.cos(sx * 2.6 + t * 1.8);
+          ship.rotation.x = 0.05 * Math.sin(t * 1.3);
+          hook.position.y = H + 0.85 + 0.12 * Math.sin(t * 0.9);
+          for (const o of fish) {
+            const a = t * o.s + o.p;
+            o.f.position.set(Math.cos(a) * o.r, o.y, Math.sin(a) * o.r * 0.8);
+            o.f.rotation.y = -a;
+          }
+        },
+      };
+    },
+
+    mac() {
+      const { scene, camera } = world({ target: [0.2, 0.75, 0.2], zoom: 1.3 });
+      const accents = [0x3b82f6, 0xf59e0b, 0x10b981, 0xec4899, 0x8b5cf6, 0x14b8a6];
+      const cardGeo = rbox(2.2, 0.07, 1.4, 0.035);
+      const cards = accents.map((c, i) => {
+        const g = new THREE.Group();
+        const glass = std(0xe0f2fe, { transparent: true, opacity: 0.88, roughness: 0.15 });
+        const ink = std(c, { transparent: true });
+        const soft = std(0x94a3b8, { transparent: true });
+        mesh(cardGeo, glass, g);
+        mesh(new THREE.BoxGeometry(0.3, 0.02, 0.3), ink, g, -0.75, 0.045, -0.35);
+        mesh(new THREE.BoxGeometry(1.1, 0.02, 0.1), soft, g, 0.1, 0.045, -0.4);
+        mesh(new THREE.BoxGeometry(0.75, 0.02, 0.1), soft, g, -0.07, 0.045, -0.2);
+        scene.add(g);
+        return { g, mats: [glass, ink, soft] };
+      });
+      const key = mesh(rbox(0.55, 0.22, 0.55, 0.08), std(0x27272a, { roughness: 0.3 }), scene, 1.55, 0.11, 1.15);
+      const slot = (i) => ({ y: 0.15 + i * 0.3, x: -i * 0.06, z: -i * 0.06 });
+      const place = (c, s, op) => {
+        c.g.position.set(s.x, s.y, s.z);
+        c.mats.forEach((m, j) => (m.opacity = j ? op : op * 0.88));
+        c.g.visible = op > 0.01;
+      };
+      let order = cards.map((_, i) => i), k = 1, wait = 1.2;
+      return {
+        scene, camera,
+        poke() { if (k >= 1) wait = 0; },
+        update(t, dt) {
+          if (k >= 1) {
+            wait -= dt;
+            if (wait <= 0) { k = 0; wait = 1.6; }
+          } else {
+            k = Math.min(1, k + dt / 0.7);
+            if (k >= 1) order = [...order.slice(1), order[0]];
+          }
+          const p = ease(k >= 1 ? 0 : k);
+          order.forEach((ci, j) => {
+            const c = cards[ci];
+            if (j === 0) {
+              const a = slot(0), b = slot(-1.5);
+              place(c, { x: a.x, y: a.y + (b.y - a.y) * p, z: a.z }, 1 - p);
+            } else if (j === order.length - 1) {
+              const a = slot(j - 1), b = slot(j + 1.5);
+              place(c, { x: a.x, y: b.y + (a.y - b.y) * p, z: a.z }, p);
+            } else {
+              const a = slot(j), b = slot(j - 1);
+              place(c, { x: a.x + (b.x - a.x) * p, y: a.y + (b.y - a.y) * p, z: a.z + (b.z - a.z) * p }, 1);
+            }
+          });
+          key.position.y = 0.11 - 0.07 * Math.sin(Math.PI * clamp01(k * 2.5));
+        },
+      };
+    },
+
+    loldle() {
+      const { scene, camera } = world({ target: [0, 0, 0], zoom: 1.55 });
+      const C = { g: 0x22c55e, o: 0xf59e0b, r: 0xef4444 };
+      const rows = ['roorr', 'ogror', 'ggorg', 'ggggg'];
+      const blank = std(0xe4e4e7);
+      const geo = new THREE.BoxGeometry(0.5, 0.12, 0.5);
+      const tiles = [];
+      rows.forEach((row, r) => [...row].forEach((ch, c) => {
+        const face = std(C[ch], { roughness: 0.4 });
+        const m = mesh(geo, [blank, blank, blank, face, blank, blank], scene, (c - 2) * 0.6, 0.06, (r - 1.5) * 0.6);
+        tiles.push({ m, at: r * 1.5 + c * 0.16 });
+      }));
+      const reveal = rows.length * 1.5 + 1.8, back = 0.6;
+      let t0 = null;
+      return {
+        scene, camera,
+        poke() { t0 = null; },
+        recolor(d) { blank.color.set(d ? 0x3f3f46 : 0xe4e4e7); },
+        update(t) {
+          if (t0 === null) t0 = t;
+          const e = (t - t0) % (reveal + back);
+          for (const o of tiles) {
+            const p = e < reveal ? ease(clamp01((e - o.at) / 0.42)) : 1 - ease(clamp01((e - reveal) / back));
+            o.m.rotation.x = Math.PI * p;
+            o.m.position.y = 0.06 + Math.sin(Math.PI * p) * 0.3;
+          }
+        },
+      };
+    },
+
+    stack() {
+      const { scene, camera } = world({ target: [0, 0.8, 0], zoom: 1.15 });
+      const group = new THREE.Group();
+      scene.add(group);
+      const layers = [[0x93c5fd, 4], [0xa5b4fc, 5], [0x5eead4, 8], [0x60a5fa, 4]];
+      const chipMat = std(0xffffff, { roughness: 0.4 });
+      const slabs = layers.map(([color, n]) => {
+        const g = new THREE.Group();
+        mesh(rbox(2.3, 0.2, 2.3, 0.08), std(color, { roughness: 0.4 }), g);
+        for (let i = 0; i < n; i++) {
+          const cx = (i % 4) * 0.5 - 0.75, cz = Math.floor(i / 4) * 0.5 - 0.25;
+          mesh(rbox(0.38, 0.09, 0.3, 0.04), chipMat, g, cx, 0.14, cz);
+        }
+        group.add(g);
+        return g;
+      });
+      const spread = { x: 0, v: 0 };
+      return {
+        scene, camera,
+        poke() { spread.v += 2.6; },
+        update(t, dt) {
+          spring(spread, dt, 22, 3);
+          group.rotation.y = t * 0.3;
+          const gap = 0.32 + 0.08 * Math.sin(t * 1.2) + spread.x;
+          slabs.forEach((g, i) => (g.position.y = 0.1 + i * (0.2 + gap)));
+        },
+      };
+    },
+  };
+
+  const views = [...document.querySelectorAll('.model')].map((el) => {
+    const v = builders[el.dataset.model]();
+    el.addEventListener('pointerdown', (e) => v.poke?.(e, el));
+    return { el, ...v };
+  });
+
+  const recolor = () => views.forEach((v) => v.recolor?.(dark.matches));
+  recolor();
+  dark.addEventListener('change', recolor);
 
   let prev = performance.now();
-  const frame = (now) => {
+  const draw = (now) => {
     const dt = Math.min(0.05, (now - prev) / 1000);
     prev = now;
     const t = now / 1000;
-    jelly(t, dt);
-    cube(t, dt);
-    if (!still) requestAnimationFrame(frame);
+    const W = document.documentElement.clientWidth, H = document.documentElement.clientHeight;
+    const size = renderer.getSize(new THREE.Vector2());
+    if (size.x !== W || size.y !== H) renderer.setSize(W, H, false);
+    renderer.setScissor(0, 0, W, H);
+    renderer.clear();
+    for (const v of views) {
+      const r = v.el.getBoundingClientRect();
+      if (!r.width || r.bottom < 0 || r.top > H) continue;
+      v.update(t, dt);
+      renderer.setViewport(r.left, H - r.bottom, r.width, r.height);
+      renderer.setScissor(r.left, H - r.bottom, r.width, r.height);
+      renderer.render(v.scene, v.camera);
+    }
   };
-  requestAnimationFrame(frame);
+
+  canvas.classList.add('ready');
+  if (still) {
+    const once = () => draw(performance.now());
+    addEventListener('scroll', once, { passive: true });
+    addEventListener('resize', once);
+    once();
+  } else {
+    const loop = (now) => {
+      draw(now);
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
 };
 
 start().catch(() => {});
