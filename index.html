@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>vuthelong — Resume</title>
 <meta name="description" content="Unity developer building editor tools, agent skills and interactive experiments.">
+<script>
+try {
+  const t = localStorage.getItem('theme');
+  if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+} catch (e) {}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -17,10 +23,11 @@
   --line: #e4e4e7;
   --chip: #f4f4f5;
   --accent: #2563eb;
-  color-scheme: light dark;
+  --pop: #ffffff;
+  color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #0a0a0b;
     --text: #f4f4f5;
     --muted: #a1a1aa;
@@ -28,7 +35,20 @@
     --line: #27272a;
     --chip: #18181b;
     --accent: #60a5fa;
+    --pop: #18181b;
+    color-scheme: dark;
   }
+}
+:root[data-theme="dark"] {
+  --bg: #0a0a0b;
+  --text: #f4f4f5;
+  --muted: #a1a1aa;
+  --faint: #71717a;
+  --line: #27272a;
+  --chip: #18181b;
+  --accent: #60a5fa;
+  --pop: #18181b;
+  color-scheme: dark;
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -38,19 +58,24 @@ body {
   color: var(--text);
   font: 400 15px/1.65 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 main { max-width: 760px; margin: 0 auto; padding: 72px 24px 96px; }
 a { color: inherit; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
 a:hover { text-decoration-color: var(--accent); color: var(--accent); }
 
 header { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
-h1 { margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+h1 { margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; cursor: pointer; user-select: none; display: inline-block; }
 .role { margin: 6px 0 0; font-size: 17px; color: var(--muted); }
-.links { display: flex; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
-.links a { text-decoration: none; }
+.links { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 14px; color: var(--muted); }
+.links a { text-decoration: none; margin-right: 8px; }
 .links a:hover { color: var(--accent); }
-.print { appearance: none; border: 1px solid var(--line); background: transparent; color: var(--muted); font: inherit; font-size: 13px; padding: 4px 10px; border-radius: 6px; cursor: pointer; }
-.print:hover { color: var(--text); border-color: var(--faint); }
+.btn { appearance: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: transparent; color: var(--muted); font: inherit; font-size: 13px; line-height: 1.4; padding: 4px 10px; border-radius: 6px; cursor: pointer; text-decoration: none; }
+.btn:hover { color: var(--text); border-color: var(--faint); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn svg { width: 14px; height: 14px; }
+.icon-moon, :root[data-dark="1"] .icon-sun { display: none; }
+:root[data-dark="1"] .icon-moon { display: block; }
 
 .summary { margin: 28px 0 0; color: var(--muted); max-width: 640px; }
 .stats { display: flex; gap: 16px 32px; margin: 24px 0 0; padding: 0; list-style: none; flex-wrap: wrap; }
@@ -61,10 +86,18 @@ h1 { margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line
 section { margin-top: 56px; }
 h2 { margin: 0 0 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
 
+.chart { position: relative; height: 230px; margin: 0 -8px; cursor: crosshair; touch-action: pan-y; }
+.chart-note { margin: 8px 0 0; font-size: 13px; color: var(--faint); }
+.chart-note b { color: var(--text); font-weight: 600; }
+.tip { position: fixed; z-index: 3; pointer-events: none; padding: 4px 8px; font-size: 12px; border-radius: 6px; background: var(--pop); color: var(--text); border: 1px solid var(--line); box-shadow: 0 6px 20px -8px rgba(0, 0, 0, 0.25); opacity: 0; transform: translate(-50%, calc(-100% - 10px)); transition: opacity 0.12s; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tip.on { opacity: 1; }
+
 .item { display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; padding: 18px 0; border-top: 1px solid var(--line); }
 .item:first-of-type { border-top: 0; padding-top: 0; }
-.item h3 { margin: 0; font-size: 16px; font-weight: 600; }
-.item h3 .tag { margin-left: 8px; font-size: 11px; font-weight: 500; color: var(--faint); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; vertical-align: 2px; }
+.item h3 { margin: 0; font-size: 16px; font-weight: 600; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; }
+.item h3 .tag { font-size: 11px; font-weight: 500; color: var(--faint); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; }
+.item h3 .play { font-size: 12px; font-weight: 500; padding: 1px 9px; border-radius: 999px; background: var(--text); color: var(--bg); border: 0; text-decoration: none; }
+.item h3 .play:hover { background: var(--accent); color: #fff; }
 .item time { font-size: 13px; color: var(--faint); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .item .meta { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--muted); font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; }
 .item ul { grid-column: 1 / -1; margin: 8px 0 0; padding-left: 18px; color: var(--muted); }
@@ -80,16 +113,42 @@ h2 { margin: 0 0 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em
 .skills dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .chip { font-size: 13px; padding: 2px 9px; border-radius: 6px; background: var(--chip); border: 1px solid var(--line); }
 
-footer { margin-top: 64px; font-size: 13px; color: var(--faint); }
+footer { margin-top: 64px; font-size: 13px; color: var(--faint); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+kbd { font: 500 11px/1 "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; padding: 3px 6px; border-radius: 5px; border: 1px solid var(--line); border-bottom-width: 2px; background: var(--chip); color: var(--text); }
 
 header, section, .item { position: relative; }
 .model { display: none; position: absolute; top: -12px; width: min(220px, calc((100vw - 712px) / 2 - 72px)); aspect-ratio: 1; cursor: pointer; touch-action: manipulation; }
 .model[data-side="left"] { right: calc(100% + 56px); }
 .model[data-side="right"] { left: calc(100% + 56px); }
-.model::after { content: attr(data-hint); position: absolute; left: 0; right: 0; bottom: -10px; text-align: center; font-size: 11px; color: var(--faint); }
-#stage { display: none; position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; opacity: 0; transition: opacity 0.8s ease; }
+.model::after, .chart::after { content: attr(data-hint); position: absolute; left: 0; right: 0; bottom: -10px; text-align: center; font-size: 11px; color: var(--faint); pointer-events: none; }
+.chart::after { bottom: auto; top: 0; text-align: right; right: 8px; }
+#stage { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; opacity: 0; transition: opacity 0.8s ease; }
 #stage.ready { opacity: 1; }
-@media (min-width: 1240px) { .model, #stage { display: block; } }
+@media (min-width: 1240px) { .model { display: block; } }
+
+dialog { width: min(420px, calc(100vw - 32px)); padding: 24px; border: 1px solid var(--line); border-radius: 12px; background: var(--pop); color: var(--text); box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.4); }
+dialog::backdrop { background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(2px); }
+dialog h3 { margin: 0 0 16px; font-size: 16px; font-weight: 600; }
+.keys { display: grid; grid-template-columns: auto 1fr; gap: 10px 16px; margin: 0; align-items: center; font-size: 14px; }
+.keys dt { text-align: right; }
+.keys dd { margin: 0; color: var(--muted); }
+.secret { margin: 18px 0 0; font-size: 12px; color: var(--faint); }
+dialog form { margin-top: 20px; text-align: right; }
+
+.toast { position: fixed; left: 50%; bottom: 28px; z-index: 4; transform: translate(-50%, 20px); padding: 8px 14px; border-radius: 999px; font-size: 13px; background: var(--text); color: var(--bg); opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+.jelly h1, .jelly .stats b, .jelly .chip { display: inline-block; animation: jelly 0.9s ease-in-out infinite; transform-origin: 50% 100%; }
+.jelly .stats li:nth-child(2) b, .jelly .chip:nth-child(2n) { animation-delay: -0.3s; }
+.jelly .stats li:nth-child(3) b, .jelly .chip:nth-child(3n) { animation-delay: -0.6s; }
+@keyframes jelly {
+  0%, 100% { transform: scale(1, 1); }
+  25% { transform: scale(1.06, 0.92) skewX(-3deg); }
+  50% { transform: scale(0.95, 1.06) skewX(2deg); }
+  75% { transform: scale(1.03, 0.97) skewX(-1deg); }
+}
+.pop h1 { animation: pop 0.5s ease; }
+@keyframes pop { 40% { transform: translateY(-6px) scale(1.04); } }
 
 @media (max-width: 560px) {
   main { padding: 48px 16px 72px; }
@@ -98,14 +157,19 @@ header, section, .item { position: relative; }
   .item time { order: -1; }
   .skills { grid-template-columns: 1fr; gap: 4px; }
   .skills dd { margin-bottom: 12px; }
+  .chart { height: 170px; margin: 0; }
+  .chart::after { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jelly h1, .jelly .stats b, .jelly .chip, .pop h1 { animation: none; }
 }
 
 @media print {
-  :root { --bg: #fff; --text: #000; --muted: #333; --faint: #666; --line: #ddd; --chip: #f5f5f5; }
+  :root, :root[data-theme] { --bg: #fff; --text: #000; --muted: #333; --faint: #666; --line: #ddd; --chip: #f5f5f5; }
   @page { size: A4; margin: 14mm 16mm; }
   body { font-size: 11pt; }
   main { max-width: none; padding: 0; }
-  .print, .model, #stage { display: none !important; }
+  .btn, .model, .chart, #stage, .tip, .toast, dialog { display: none !important; }
   section { margin-top: 28px; break-inside: auto; }
   .item { break-inside: avoid; padding: 10px 0; }
   a { text-decoration: none; }
@@ -117,127 +181,243 @@ header, section, .item { position: relative; }
 <main>
 
 <header>
-  <div class="model" data-model="cube" data-side="right" data-hint="click to roll"></div>
+  <div class="model" data-model="cube" data-side="right" data-hint="click to roll" data-hint-vi="bấm để lăn"></div>
   <div>
-    <h1>vuthelong</h1>
-    <p class="role">Unity Developer · Editor Tooling</p>
+    <h1 id="name" title="Click me">vuthelong</h1>
+    <p class="role" data-vi="Lập trình viên Unity · Công cụ Editor">Unity Developer · Editor Tooling</p>
   </div>
   <nav class="links">
     <a href="https://github.com/vuthelong">github.com/vuthelong</a>
-    <button class="print" type="button" onclick="window.print()">Save as PDF</button>
+    <button class="btn" id="theme-btn" type="button" aria-label="Toggle light or dark theme" title="Theme (T)">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+    <button class="btn" id="lang-btn" type="button" title="Language (L)">VI</button>
+    <button class="btn" id="help-btn" type="button" aria-label="Keyboard shortcuts" title="Shortcuts (?)">?</button>
+    <button class="btn" id="print-btn" type="button" data-vi="Lưu PDF">Save as PDF</button>
   </nav>
 </header>
 
-<p class="summary">Unity developer working in Unity 6 and C#. I build editor tools that remove friction from daily work, procedural environments and rendering, and AI agent skills for game development. Comfortable outside Unity too: macOS apps in Swift, WebGPU, and Node.js.</p>
+<p class="summary" data-vi="Lập trình viên Unity làm việc với Unity 6 và C#. Tôi làm công cụ editor giúp công việc hằng ngày bớt vướng víu, môi trường procedural và rendering, cùng agent skill AI cho phát triển game. Ngoài Unity, tôi cũng làm app macOS bằng Swift, WebGPU và Node.js.">Unity developer working in Unity 6 and C#. I build editor tools that remove friction from daily work, procedural environments and rendering, and AI agent skills for game development. Comfortable outside Unity too: macOS apps in Swift, WebGPU, and Node.js.</p>
 
 <ul class="stats">
-  <li><b>19</b><span>repositories in 2026</span></li>
-  <li><b>1,158</b><span>commits in 2026</span></li>
-  <li><b>8</b><span>Unity editor tools</span></li>
-  <li><b>71</b><span>agent skills</span></li>
+  <li><b data-stat="repos">19</b><span><span data-vi="repo trong năm">repositories in</span> <span data-stat="year">2026</span></span></li>
+  <li><b data-stat="commits">1,158</b><span><span data-vi="commit trong năm">commits in</span> <span data-stat="year">2026</span></span></li>
+  <li><b>8</b><span data-vi="công cụ Unity Editor">Unity editor tools</span></li>
+  <li><b>71</b><span data-vi="agent skill">agent skills</span></li>
 </ul>
 
 <section>
-  <h2>Projects</h2>
+  <h2><span data-vi="Hoạt động">Activity</span> · <span data-stat="year">2026</span></h2>
+  <div class="chart" data-model="activity" data-hint="hover a day · click to replay" data-hint-vi="rê chuột xem từng ngày · bấm để chạy lại"></div>
+  <p class="chart-note"><b data-stat="commits">1,158</b> <span data-vi="commit trên mọi repo, mỗi cột là một ngày.">commits across every repo, one bar per day.</span></p>
+</section>
+
+<section>
+  <h2 data-vi="Dự án">Projects</h2>
 
   <div class="item">
-    <div class="model" data-model="env" data-side="left" data-hint="click to skip time"></div>
+    <div class="model" data-model="env" data-side="left" data-hint="click to skip time" data-hint-vi="bấm để tua thời gian"></div>
     <h3>EnvironmentPrototype<span class="tag">private</span></h3>
-    <time>Oct 2026</time>
+    <time data-vi="10/2026">Oct 2026</time>
     <p class="meta">Unity 6 · URP · C# · HLSL</p>
     <ul>
-      <li>Game clock at 20 real minutes per day, with time scaling and jumps.</li>
-      <li>Astronomical sun path at 50° N with seasonal day length; sun-driven light, ambient, fog and shadows.</li>
-      <li>Procedural sky with sun disc, Belt of Venus and Earth shadow; stars and Milky Way rotating with sidereal time; moonlight and clouds.</li>
-      <li>In-game fence and wall tools, with instanced bricks shaped in the vertex shader.</li>
-      <li>471 commits in eight days, each feature tracked against specs, tests and screenshot sign-off.</li>
+      <li data-vi="Đồng hồ game 20 phút thật mỗi ngày, có tăng tốc và nhảy giờ.">Game clock at 20 real minutes per day, with time scaling and jumps.</li>
+      <li data-vi="Quỹ đạo mặt trời thiên văn ở vĩ độ 50° B, độ dài ngày đổi theo mùa; ánh sáng, ambient, sương mù và bóng đổ chạy theo mặt trời.">Astronomical sun path at 50° N with seasonal day length; sun-driven light, ambient, fog and shadows.</li>
+      <li data-vi="Bầu trời procedural với đĩa mặt trời, Belt of Venus và bóng Trái Đất; sao và Dải Ngân Hà xoay theo giờ sao; ánh trăng và mây.">Procedural sky with sun disc, Belt of Venus and Earth shadow; stars and Milky Way rotating with sidereal time; moonlight and clouds.</li>
+      <li data-vi="Công cụ dựng hàng rào và tường trong game, gạch instanced được tạo dáng trong vertex shader.">In-game fence and wall tools, with instanced bricks shaped in the vertex shader.</li>
+      <li data-vi="471 commit trong tám ngày, mỗi tính năng được đối chiếu với spec, test và ảnh nghiệm thu.">471 commits in eight days, each feature tracked against specs, tests and screenshot sign-off.</li>
     </ul>
   </div>
 
   <div class="item">
-    <div class="model" data-model="ktools" data-side="right" data-hint="click to scatter"></div>
-    <h3>Kingfisher K-Tools<span class="tag">8 tools</span></h3>
-    <time>Aug – Sep 2026</time>
+    <div class="model" data-model="ktools" data-side="right" data-hint="click to scatter" data-hint-vi="bấm để tung ra"></div>
+    <h3>Kingfisher K-Tools<span class="tag" data-vi="8 tool">8 tools</span></h3>
+    <time data-vi="8 – 9/2026">Aug – Sep 2026</time>
     <p class="meta">Unity Editor · C# · UPM</p>
     <ul>
-      <li>Suite of independent editor tools, each its own package installable from a git URL, all editor-only.</li>
-      <li>Shared settings backend (<a href="https://github.com/vuthelong/KSetting">K-Setting</a>) that discovers installed tools by reflection, so nothing needs wiring.</li>
-      <li>Versioned releases and a development project that holds every tool as a git submodule.</li>
+      <li data-vi="Bộ công cụ editor độc lập, mỗi tool là một package cài từ git URL, chỉ chạy trong editor.">Suite of independent editor tools, each its own package installable from a git URL, all editor-only.</li>
+      <li data-vi='Backend cài đặt chung (<a href="https://github.com/vuthelong/KSetting">K-Setting</a>) tự tìm các tool đã cài bằng reflection, không cần nối dây.'>Shared settings backend (<a href="https://github.com/vuthelong/KSetting">K-Setting</a>) that discovers installed tools by reflection, so nothing needs wiring.</li>
+      <li data-vi="Phát hành có version và một project phát triển chứa mọi tool dưới dạng git submodule.">Versioned releases and a development project that holds every tool as a git submodule.</li>
     </ul>
     <ul class="tools">
-      <li><b>K-Folders</b> 1.0.9 · folder colors, minimap</li>
-      <li><b>K-Hierarchy</b> 1.0.7 · hierarchy navigation</li>
-      <li><b>K-Inspector</b> 1.1.0 · inspector tooling</li>
-      <li><b>K-Favorites</b> 1.0.7 · bookmark overlay</li>
-      <li><b>K-Tabs</b> 1.0.7 · editor window tabs</li>
-      <li><b><a href="https://github.com/vuthelong/KEmoji">K-Emoji</a></b> 1.0.7 · TMP sprite assets</li>
-      <li><b><a href="https://github.com/vuthelong/KClipboard">K-Clipboard</a></b> 0.1.0 · copy history</li>
-      <li><b><a href="https://github.com/vuthelong/KScene">K-Scene</a></b> 0.1.0 · camera bookmarks</li>
+      <li><b>K-Folders</b> <span data-stat="v-KFolders">1.0.9</span> · <span data-vi="màu thư mục, minimap">folder colors, minimap</span></li>
+      <li><b>K-Hierarchy</b> <span data-stat="v-KHierarchy">1.0.7</span> · <span data-vi="điều hướng Hierarchy">hierarchy navigation</span></li>
+      <li><b>K-Inspector</b> <span data-stat="v-KInspector">1.1.0</span> · <span data-vi="công cụ Inspector">inspector tooling</span></li>
+      <li><b>K-Favorites</b> <span data-stat="v-KFavorites">1.0.7</span> · <span data-vi="bảng bookmark">bookmark overlay</span></li>
+      <li><b>K-Tabs</b> <span data-stat="v-KTabs">1.0.7</span> · <span data-vi="tab cho cửa sổ editor">editor window tabs</span></li>
+      <li><b><a href="https://github.com/vuthelong/KEmoji">K-Emoji</a></b> <span data-stat="v-KEmoji">1.0.7</span> · <span data-vi="sprite asset TMP">TMP sprite assets</span></li>
+      <li><b><a href="https://github.com/vuthelong/KClipboard">K-Clipboard</a></b> <span data-stat="v-KClipboard">0.1.0</span> · <span data-vi="lịch sử copy">copy history</span></li>
+      <li><b><a href="https://github.com/vuthelong/KScene">K-Scene</a></b> <span data-stat="v-KScene">0.1.0</span> · <span data-vi="bookmark camera">camera bookmarks</span></li>
     </ul>
   </div>
 
   <div class="item">
-    <div class="model" data-model="library" data-side="left" data-hint="71 skills · click to restack"></div>
+    <div class="model" data-model="library" data-side="left" data-hint="71 skills · click to restack" data-hint-vi="71 skill · bấm để xếp lại"></div>
     <h3><a href="https://github.com/vuthelong/unity-csharp-skills">unity-csharp-skills</a></h3>
-    <time>Oct 2026</time>
+    <time data-vi="10/2026">Oct 2026</time>
     <p class="meta">Claude Code plugins · Unity 6 · C#</p>
     <ul>
-      <li>71 Agent Skills in 10 plugins covering C# style and review, editor tooling, URP and VFX, UI, 2D, gameplay, audio, services and asset pipeline.</li>
-      <li>Merged and deduplicated from several sources; library skills follow each library's source code where its README disagrees.</li>
+      <li data-vi="71 Agent Skill trong 10 plugin: style và review C#, công cụ editor, URP và VFX, UI, 2D, gameplay, audio, services và asset pipeline.">71 Agent Skills in 10 plugins covering C# style and review, editor tooling, URP and VFX, UI, 2D, gameplay, audio, services and asset pipeline.</li>
+      <li data-vi="Gộp và loại trùng từ nhiều nguồn; skill cho thư viện bám theo source code khi README của thư viện nói khác.">Merged and deduplicated from several sources; library skills follow each library's source code where its README disagrees.</li>
     </ul>
   </div>
 
   <div class="item">
-    <div class="model" data-model="harbor" data-side="right" data-hint="click to poke"></div>
-    <h3><a href="https://github.com/vuthelong/harbor-jelly">Harbor Jelly</a></h3>
-    <time>Oct 2026</time>
+    <div class="model" data-model="harbor" data-side="right" data-hint="click to poke" data-hint-vi="bấm để chọc"></div>
+    <h3><a href="https://github.com/vuthelong/harbor-jelly">Harbor Jelly</a><a class="play" href="https://vuthelong.github.io/harbor-jelly/harbor-jelly.html" data-vi="▶ Chơi thử">▶ Play</a></h3>
+    <time data-vi="10/2026">Oct 2026</time>
     <p class="meta">WebGPU · JavaScript · Playwright</p>
     <ul>
-      <li>Real-time simulation of a small harbour inside a block of jelly sea: waves, a ship that loads and casts off, fish and throwable lifebuoys.</li>
-      <li>Single-file build, with choreography unit tests and Playwright end-to-end tests.</li>
+      <li data-vi="Mô phỏng thời gian thực một bến cảng nhỏ trong khối biển jelly: sóng, tàu bốc hàng rồi nhổ neo, cá và phao cứu sinh ném được.">Real-time simulation of a small harbour inside a block of jelly sea: waves, a ship that loads and casts off, fish and throwable lifebuoys.</li>
+      <li data-vi="Build thành một file duy nhất, có unit test cho choreography và test end-to-end bằng Playwright.">Single-file build, with choreography unit tests and Playwright end-to-end tests.</li>
     </ul>
   </div>
 
   <div class="item">
-    <div class="model" data-model="mac" data-side="left" data-hint="click to copy"></div>
+    <div class="model" data-model="mac" data-side="left" data-hint="click to copy" data-hint-vi="bấm để copy"></div>
     <h3><a href="https://github.com/vuthelong/MacClipboard">MacClipboard</a></h3>
-    <time>Aug 2026</time>
+    <time data-vi="8/2026">Aug 2026</time>
     <p class="meta">Swift · SwiftUI · AppKit</p>
     <ul>
-      <li>Menu-bar clipboard history for macOS on a global ⌘⇧V hotkey, with search, pins and auto-paste.</li>
-      <li>Floating panel with a hand-built glass material that respects Reduce Transparency; launch at login through SMAppService.</li>
+      <li data-vi="Lịch sử clipboard trên menu bar của macOS với phím tắt toàn cục ⌘⇧V, có tìm kiếm, ghim và tự dán.">Menu-bar clipboard history for macOS on a global ⌘⇧V hotkey, with search, pins and auto-paste.</li>
+      <li data-vi="Panel nổi với lớp kính tự dựng, tôn trọng Reduce Transparency; khởi động cùng máy qua SMAppService.">Floating panel with a hand-built glass material that respects Reduce Transparency; launch at login through SMAppService.</li>
     </ul>
   </div>
 
   <div class="item">
-    <div class="model" data-model="loldle" data-side="right" data-hint="click to replay"></div>
+    <div class="model" data-model="loldle" data-side="right" data-hint="click to replay" data-hint-vi="bấm để chơi lại"></div>
     <h3><a href="https://github.com/vuthelong/loldle-discord-bot">LoLdle Discord Bot</a></h3>
-    <time>Aug 2026</time>
+    <time data-vi="8/2026">Aug 2026</time>
     <p class="meta">Node.js · discord.js</p>
     <ul>
-      <li>Daily League of Legends guessing game in Discord: slash commands, autocomplete, comparison embeds and daily announcements.</li>
+      <li data-vi="Game đoán tướng Liên Minh Huyền Thoại hằng ngày trong Discord: slash command, autocomplete, embed so sánh và thông báo mỗi ngày.">Daily League of Legends guessing game in Discord: slash commands, autocomplete, comparison embeds and daily announcements.</li>
     </ul>
   </div>
 </section>
 
 <section>
-  <div class="model" data-model="stack" data-side="left" data-hint="click to expand"></div>
-  <h2>Skills</h2>
+  <div class="model" data-model="stack" data-side="left" data-hint="click to expand" data-hint-vi="bấm để tách lớp"></div>
+  <h2 data-vi="Kỹ năng">Skills</h2>
   <dl class="skills">
-    <dt>Languages</dt>
+    <dt data-vi="Ngôn ngữ">Languages</dt>
     <dd><span class="chip">C#</span><span class="chip">HLSL</span><span class="chip">Swift</span><span class="chip">JavaScript</span></dd>
     <dt>Unity</dt>
     <dd><span class="chip">Unity 6</span><span class="chip">URP</span><span class="chip">Editor scripting</span><span class="chip">Package Manager</span><span class="chip">Shaders</span><span class="chip">Cinemachine</span><span class="chip">Addressables</span><span class="chip">TextMesh Pro</span></dd>
-    <dt>Other</dt>
+    <dt data-vi="Khác">Other</dt>
     <dd><span class="chip">WebGPU</span><span class="chip">React Three Fiber</span><span class="chip">SwiftUI / AppKit</span><span class="chip">Node.js</span><span class="chip">Playwright</span></dd>
-    <dt>Workflow</dt>
+    <dt data-vi="Quy trình">Workflow</dt>
     <dd><span class="chip">Git &amp; submodules</span><span class="chip">Claude Code</span><span class="chip">Agent Skills</span><span class="chip">Spec-driven development</span></dd>
   </dl>
 </section>
 
-<footer>Updated October 2026</footer>
+<footer>
+  <span><span data-vi="Cập nhật">Updated</span> <span data-stat="updated">2026-10-14</span></span>
+  <span><span data-vi="Nhấn">Press</span> <kbd>?</kbd> <span data-vi="để xem phím tắt">for shortcuts</span></span>
+</footer>
 
 </main>
+
+<dialog id="help">
+  <h3 data-vi="Phím tắt">Keyboard shortcuts</h3>
+  <dl class="keys">
+    <dt><kbd>T</kbd></dt><dd data-vi="Đổi sáng / tối">Toggle light / dark</dd>
+    <dt><kbd>L</kbd></dt><dd data-vi="Đổi English / Tiếng Việt">Switch English / Vietnamese</dd>
+    <dt><kbd>J</kbd></dt><dd data-vi="Cho mọi model nhảy lên">Make every model jump</dd>
+    <dt><kbd>P</kbd></dt><dd data-vi="Lưu thành PDF">Save as PDF</dd>
+    <dt><kbd>?</kbd></dt><dd data-vi="Mở bảng này">Open this panel</dd>
+  </dl>
+  <p class="secret" data-vi="Còn một mã bí mật nữa. Gợi ý: ↑ ↑ ↓ ↓ …">There is one more secret code. Hint: ↑ ↑ ↓ ↓ …</p>
+  <form method="dialog"><button class="btn" data-vi="Đóng">Close</button></form>
+</dialog>
+<div class="tip" id="tip" role="status"></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script id="activity-data" type="application/json">{"year":2026,"updated":"2026-10-14","days":{"2026-04-01":3,"2026-04-05":2,"2026-07-23":1,"2026-07-26":11,"2026-07-28":1,"2026-08-06":20,"2026-08-07":2,"2026-08-09":15,"2026-08-10":5,"2026-08-11":2,"2026-08-12":200,"2026-08-13":97,"2026-08-14":1,"2026-08-18":71,"2026-08-19":41,"2026-08-20":20,"2026-08-21":23,"2026-08-22":13,"2026-08-23":5,"2026-08-24":25,"2026-08-26":17,"2026-08-27":17,"2026-09-08":7,"2026-09-09":6,"2026-09-11":1,"2026-09-14":22,"2026-09-24":3,"2026-10-05":52,"2026-10-06":11,"2026-10-07":20,"2026-10-08":75,"2026-10-09":45,"2026-10-10":3,"2026-10-11":34,"2026-10-12":143,"2026-10-13":142,"2026-10-14":2}}</script>
+<script>
+(() => {
+  const root = document.documentElement;
+  const media = matchMedia('(prefers-color-scheme: dark)');
+  const store = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+  const read = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const isDark = () => (root.dataset.theme ? root.dataset.theme === 'dark' : media.matches);
+  const syncTheme = () => {
+    root.dataset.dark = isDark() ? '1' : '0';
+    dispatchEvent(new CustomEvent('profile:theme', { detail: isDark() }));
+  };
+  const toggleTheme = () => {
+    root.dataset.theme = isDark() ? 'light' : 'dark';
+    store('theme', root.dataset.theme);
+    syncTheme();
+  };
+  media.addEventListener('change', syncTheme);
+  syncTheme();
+
+  const setLang = (lang) => {
+    root.lang = lang;
+    document.querySelectorAll('[data-vi]').forEach((el) => {
+      if (el.dataset.en === undefined) el.dataset.en = el.innerHTML;
+      el.innerHTML = lang === 'vi' ? el.dataset.vi : el.dataset.en;
+    });
+    document.querySelectorAll('[data-hint-vi]').forEach((el) => {
+      if (el.dataset.hintEn === undefined) el.dataset.hintEn = el.dataset.hint;
+      el.dataset.hint = lang === 'vi' ? el.dataset.hintVi : el.dataset.hintEn;
+    });
+    document.getElementById('lang-btn').textContent = lang === 'vi' ? 'EN' : 'VI';
+    store('lang', lang);
+  };
+  const toggleLang = () => setLang(root.lang === 'vi' ? 'en' : 'vi');
+  if (read('lang') === 'vi') setLang('vi');
+
+  const toastEl = document.getElementById('toast');
+  let toastTimer = 0;
+  const toast = (en, vi) => {
+    toastEl.textContent = root.lang === 'vi' ? vi : en;
+    toastEl.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('on'), 2200);
+  };
+
+  const help = document.getElementById('help');
+  const jump = () => {
+    dispatchEvent(new CustomEvent('profile:jump'));
+    document.body.classList.remove('pop');
+    void document.body.offsetWidth;
+    document.body.classList.add('pop');
+  };
+  const jelly = () => {
+    const on = document.body.classList.toggle('jelly');
+    dispatchEvent(new CustomEvent('profile:jelly', { detail: on }));
+    toast(on ? 'Jelly mode on' : 'Jelly mode off', on ? 'Bật chế độ jelly' : 'Tắt chế độ jelly');
+  };
+
+  document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+  document.getElementById('lang-btn').addEventListener('click', toggleLang);
+  document.getElementById('help-btn').addEventListener('click', () => help.showModal());
+  document.getElementById('print-btn').addEventListener('click', () => print());
+  document.getElementById('name').addEventListener('click', jump);
+
+  const code = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+  let pos = 0;
+  addEventListener('keydown', (e) => {
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    pos = key === code[pos] ? pos + 1 : key === code[0] ? 1 : 0;
+    if (pos === code.length) {
+      pos = 0;
+      if (help.open) help.close();
+      jelly();
+      return;
+    }
+    if (e.metaKey || e.ctrlKey || e.altKey || /input|textarea/i.test(e.target.tagName)) return;
+    if (help.open && key !== '?') return;
+    if (key === 't') toggleTheme();
+    else if (key === 'l') toggleLang();
+    else if (key === 'j') jump();
+    else if (key === 'p') print();
+    else if (key === '?') help.open ? help.close() : help.showModal();
+  });
+})();
+</script>
 
 <canvas id="stage" aria-hidden="true"></canvas>
 
@@ -248,14 +428,10 @@ header, section, .item { position: relative; }
 } }
 </script>
 <script type="module">
-const wide = matchMedia('(min-width: 1240px)');
 const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const dark = matchMedia('(prefers-color-scheme: dark)');
-let started = false;
+const isDark = () => document.documentElement.dataset.dark === '1';
 
 const start = async () => {
-  if (started || !wide.matches) return;
-  started = true;
   const THREE = await import('three');
   const { RoundedBoxGeometry } = await import('three/addons/geometries/RoundedBoxGeometry.js');
 
@@ -283,24 +459,25 @@ const start = async () => {
     s.x += s.v * dt;
   };
 
-  const world = ({ size = 3, target = [0, 0, 0], shadow = 0.12, zoom = 1 } = {}) => {
+  const world = ({ size = 3, target = [0, 0, 0], shadow = 0.12, zoom = 1, eye = [10, 8.2, 10], box = 5, map = 512, tilt = 1 } = {}) => {
     const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-size, size, size, -size, 0.1, 100);
-    camera.position.set(10 + target[0], 8.2 + target[1], 10 + target[2]);
+    const camera = new THREE.OrthographicCamera(-size, size, size, -size, 0.1, 200);
+    camera.position.set(eye[0] + target[0], eye[1] + target[1], eye[2] + target[2]);
     camera.zoom = zoom;
     camera.updateProjectionMatrix();
     camera.lookAt(...target);
+    camera.userData = { size, tilt, target: new THREE.Vector3(...target), base: null, aspect: 1 };
     const hemi = new THREE.HemisphereLight(0xffffff, 0x9a9183, 1.6);
     scene.add(hemi);
     const sun = new THREE.DirectionalLight(0xffffff, 2.2);
     sun.position.set(4, 9, 3);
     sun.castShadow = true;
-    sun.shadow.mapSize.set(512, 512);
-    Object.assign(sun.shadow.camera, { left: -5, right: 5, top: 5, bottom: -5 });
+    sun.shadow.mapSize.set(map, map);
+    Object.assign(sun.shadow.camera, { left: -box, right: box, top: box, bottom: -box });
     sun.shadow.camera.updateProjectionMatrix();
     sun.shadow.radius = 4;
     scene.add(sun);
-    const ground = new THREE.Mesh(new THREE.PlaneGeometry(14, 14), new THREE.ShadowMaterial({ opacity: shadow }));
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(box * 3, box * 3),new THREE.ShadowMaterial({ opacity: shadow }));
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     scene.add(ground);
@@ -542,6 +719,10 @@ const start = async () => {
       const wave = (x, z, t) => 0.035 * Math.sin(x * 2.6 + t * 1.8) + 0.025 * Math.sin(z * 3.4 - t * 1.3) + 0.02 * Math.sin((x + z) * 4 + t * 2.4);
       return {
         scene, camera,
+        enter() {
+          shear.vx += 0.6;
+          shear.vz -= 0.4;
+        },
         poke(e, el) {
           const r = el.getBoundingClientRect();
           const d = (e.clientX - r.left) / r.width - 0.5;
@@ -685,17 +866,130 @@ const start = async () => {
         },
       };
     },
+
+    activity(el) {
+      const data = JSON.parse(document.getElementById('activity-data').textContent || '{}');
+      const year = data.year || new Date().getUTCFullYear();
+      const days = data.days || {};
+      const start = Date.UTC(year, 0, 1);
+      const last = Math.min(Date.now(), Date.UTC(year, 11, 31));
+      const count = Math.floor((last - start) / 864e5) + 1;
+      const lead = new Date(start).getUTCDay();
+      const weeks = Math.ceil((count + lead) / 7);
+      const list = Array.from({ length: count }, (_, i) => {
+        const iso = new Date(start + i * 864e5).toISOString().slice(0, 10);
+        return { iso, n: days[iso] || 0, col: Math.floor((i + lead) / 7), row: (i + lead) % 7 };
+      });
+      const max = Math.max(1, ...list.map((d) => d.n));
+      const span = weeks + 2;
+      const { scene, camera, sun } = world({ size: 2.6, target: [0, 1.1, 0], eye: [5, 8.5, 20], box: span / 2 + 2, map: 2048, tilt: 0.35 });
+      camera.userData.frame = (aspect) => {
+        const visible = aspect >= 2.6 ? span : Math.min(span, 22);
+        camera.userData.target.x = (span - visible) / 2;
+        return Math.max(2.6, (visible * 0.5) / aspect);
+      };
+      sun.position.set(-8, 16, 10);
+      const geo = new THREE.BoxGeometry(0.8, 1, 0.8);
+      geo.translate(0, 0.5, 0);
+      const bars = new THREE.InstancedMesh(geo, std(0xffffff, { roughness: 0.5 }), count);
+      bars.castShadow = bars.receiveShadow = true;
+      scene.add(bars);
+      const height = (n) => (n ? 0.35 + Math.sqrt(n / max) * 6 : 0.08);
+      const level = (n) => (n ? Math.min(4, Math.ceil(Math.sqrt(n / max) * 4)) : 0);
+      const ramps = {
+        light: [0xe4e4e7, 0xbfdbfe, 0x60a5fa, 0x2563eb, 0x1e3a8a],
+        dark: [0x27272a, 0x1e3a8a, 0x1d4ed8, 0x3b82f6, 0x93c5fd],
+      };
+      let ramp = ramps.light, hover = -1, t0 = null;
+      const M = new THREE.Matrix4(), C = new THREE.Color();
+      const paint = () => {
+        list.forEach((d, i) => bars.setColorAt(i, C.set(i === hover ? 0xf59e0b : ramp[level(d.n)])));
+        bars.instanceColor.needsUpdate = true;
+      };
+      const tip = document.getElementById('tip');
+      const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+        ray.setFromCamera(ndc, camera);
+        const hit = ray.intersectObject(bars)[0];
+        const id = hit ? hit.instanceId : -1;
+        if (id !== hover) {
+          hover = id;
+          paint();
+        }
+        if (id < 0) {
+          tip.classList.remove('on');
+          return;
+        }
+        const d = list[id], vi = document.documentElement.lang === 'vi';
+        const date = new Date(d.iso + 'T00:00:00Z').toLocaleDateString(vi ? 'vi-VN' : 'en-US', { month: 'short', day: 'numeric', weekday: 'short', timeZone: 'UTC' });
+        tip.textContent = `${date} · ${d.n} ${vi ? 'commit' : d.n === 1 ? 'commit' : 'commits'}`;
+        tip.style.left = `${e.clientX}px`;
+        tip.style.top = `${e.clientY}px`;
+        tip.classList.add('on');
+      });
+      el.addEventListener('pointerleave', () => {
+        hover = -1;
+        paint();
+        tip.classList.remove('on');
+      });
+      return {
+        scene, camera,
+        poke() { t0 = null; },
+        recolor(d) {
+          ramp = d ? ramps.dark : ramps.light;
+          paint();
+        },
+        update(t) {
+          if (t0 === null) t0 = t;
+          const e = t - t0;
+          if (e > weeks * 0.025 + 1) return;
+          list.forEach((d, i) => {
+            const k = still ? 1 : ease(clamp01((e - d.col * 0.025) / 0.7));
+            M.makeScale(1, Math.max(0.001, height(d.n) * k), 1);
+            M.setPosition(d.col - weeks / 2 + 0.5, 0, d.row - 3);
+            bars.setMatrixAt(i, M);
+          });
+          bars.instanceMatrix.needsUpdate = true;
+          bars.computeBoundingSphere();
+        },
+      };
+    },
   };
 
-  const views = [...document.querySelectorAll('.model')].map((el) => {
-    const v = builders[el.dataset.model]();
+  const views = [...document.querySelectorAll('[data-model]')].map((el) => {
+    const v = builders[el.dataset.model](el);
     el.addEventListener('pointerdown', (e) => v.poke?.(e, el));
-    return { el, ...v };
+    return { el, jump: { x: 0, v: 0 }, yaw: 0, pitch: 0, ...v };
   });
 
-  const recolor = () => views.forEach((v) => v.recolor?.(dark.matches));
+  const recolor = () => views.forEach((v) => v.recolor?.(isDark()));
   recolor();
-  dark.addEventListener('change', recolor);
+  addEventListener('profile:theme', recolor);
+
+  const io = new IntersectionObserver((entries) => {
+    for (const en of entries) {
+      if (!en.isIntersecting) continue;
+      const v = views.find((x) => x.el === en.target);
+      if (v && v.seen) (v.enter ?? v.poke)?.();
+      if (v) v.seen = true;
+    }
+  }, { threshold: 0.6 });
+  views.forEach((v) => io.observe(v.el));
+
+  const kick = (power = 5) => views.forEach((v, i) => setTimeout(() => (v.jump.v += power), i * 60));
+  addEventListener('profile:jump', () => kick());
+  let jelly = false;
+  addEventListener('profile:jelly', (e) => {
+    jelly = e.detail;
+    kick(7);
+    views.forEach((v) => v.enter?.());
+  });
+
+  const pointer = { x: -1, y: -1 };
+  addEventListener('pointermove', (e) => { pointer.x = e.clientX; pointer.y = e.clientY; }, { passive: true });
+  const offset = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0), side = new THREE.Vector3();
 
   let prev = performance.now();
   const draw = (now) => {
@@ -710,10 +1004,38 @@ const start = async () => {
     for (const v of views) {
       const r = v.el.getBoundingClientRect();
       if (!r.width || r.bottom < 0 || r.top > H) continue;
+      const cam = v.camera, u = cam.userData;
+      if (!u.base) u.base = cam.position.clone().sub(u.target);
+      const aspect = r.width / r.height;
+      if (u.aspect !== aspect) {
+        u.aspect = aspect;
+        const half = u.frame ? u.frame(aspect) : u.size;
+        cam.left = -half * aspect;
+        cam.right = half * aspect;
+        cam.top = half;
+        cam.bottom = -half;
+        cam.updateProjectionMatrix();
+      }
+      const has = pointer.x >= 0 && !still;
+      const dx = has ? Math.max(-1, Math.min(1, (pointer.x - (r.left + r.width / 2)) / 600)) : 0;
+      const dy = has ? Math.max(-1, Math.min(1, (pointer.y - (r.top + r.height / 2)) / 600)) : 0;
+      const f = Math.min(1, dt * 4);
+      v.yaw += (dx * 0.35 * u.tilt - v.yaw) * f;
+      v.pitch += (dy * 0.18 * u.tilt - v.pitch) * f;
+      offset.copy(u.base).applyAxisAngle(up, v.yaw);
+      side.crossVectors(offset, up).normalize();
+      offset.applyAxisAngle(side, v.pitch);
+      cam.position.copy(u.target).add(offset);
+      cam.lookAt(u.target);
+      v.jump.v += (-60 * v.jump.x - 5 * v.jump.v) * dt;
+      v.jump.x += v.jump.v * dt;
+      v.scene.position.y = v.jump.x * 0.12;
+      v.scene.rotation.z = jelly ? 0.04 * Math.sin(t * 7 + r.top * 0.01) : 0;
+      v.scene.scale.set(jelly ? 1 + 0.04 * Math.sin(t * 9) : 1, jelly ? 1 - 0.05 * Math.sin(t * 9) : 1, 1);
       v.update(t, dt);
       renderer.setViewport(r.left, H - r.bottom, r.width, r.height);
       renderer.setScissor(r.left, H - r.bottom, r.width, r.height);
-      renderer.render(v.scene, v.camera);
+      renderer.render(v.scene, cam);
     }
   };
 
@@ -722,6 +1044,7 @@ const start = async () => {
     const once = () => draw(performance.now());
     addEventListener('scroll', once, { passive: true });
     addEventListener('resize', once);
+    addEventListener('profile:theme', once);
     once();
   } else {
     const loop = (now) => {
@@ -733,7 +1056,6 @@ const start = async () => {
 };
 
 start().catch(() => {});
-wide.addEventListener('change', () => start().catch(() => {}));
 </script>
 </body>
 </html>

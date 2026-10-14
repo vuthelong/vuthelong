@@ -4,7 +4,12 @@ Unity developer. I build editor tools, agent skills, and small interactive exper
 
 **2026:** 19 repos · 1,158 commits · C#, Swift, JavaScript, WebGPU
 
-[Resume](https://vuthelong.github.io/vuthelong/)
+[Resume](https://vuthelong.github.io/vuthelong/) · [Play Harbor Jelly](https://vuthelong.github.io/harbor-jelly/harbor-jelly.html)
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="profile-3d-contrib/profile-night-green.svg">
+  <img src="profile-3d-contrib/profile-green.svg" alt="3D contribution calendar">
+</picture>
 
 ---
 
@@ -13,7 +18,7 @@ Unity developer. I build editor tools, agent skills, and small interactive exper
 | Project | What it is | Stack |
 |---|---|---|
 | **EnvironmentPrototype** <sub>private</sub> | Living environment: game clock, astronomical sun with seasons, procedural sky, stars, moonlight, clouds, fence and wall tools | Unity 6 · URP |
-| [**harbor-jelly**](https://github.com/vuthelong/harbor-jelly) | A small working harbour inside a block of wobbly sea, simulated live | WebGPU |
+| [**harbor-jelly**](https://github.com/vuthelong/harbor-jelly) | A small working harbour inside a block of wobbly sea, simulated live · [play](https://vuthelong.github.io/harbor-jelly/harbor-jelly.html) | WebGPU |
 | [**unity-csharp-skills**](https://github.com/vuthelong/unity-csharp-skills) | 71 curated Agent Skills for Unity 6 and C#, in 10 Claude Code plugins | C# · Claude Code |
 
 #### Kingfisher K-Tools
