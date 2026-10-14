@@ -36,16 +36,7 @@
 <a href="https://github.com/vuthelong/loldle-discord-bot"><img src="./assets/card-loldle.svg" alt="LoLdle Bot — play LoLdle in Discord with slash commands." width="49%"></a>
 </p>
 
-<img src="./assets/head-sketchbook.svg" alt="04 · Sketchbook — Prototypes and starters." width="100%">
-
-<p align="center">
-<img src="./assets/card-lyly.svg" alt="Lyly of the Valley — painterly stylized Unity scene. Private." width="49%">
-<a href="https://github.com/vuthelong/lily-of-valley"><img src="./assets/card-lily.svg" alt="Lily of the Valley — Unity 6.6 game prototype." width="49%"></a>
-<a href="https://github.com/vuthelong/Project14"><img src="./assets/card-project14.svg" alt="Project 14 — Unity 6.4 project starter." width="49%"></a>
-<a href="https://github.com/vuthelong/cube"><img src="./assets/card-cube.svg" alt="Cube — rolling cube on a grid in React Three Fiber." width="49%"></a>
-</p>
-
-<img src="./assets/head-logbook.svg" alt="05 · Logbook — Voyages, April to October." width="100%">
+<img src="./assets/head-logbook.svg" alt="04 · Logbook — Voyages, April to October." width="100%">
 
 <p align="center">
 <img src="./assets/logbook.svg" alt="Timeline of 19 repositories from 2026, from Project14 in April to harbor-jelly in October." width="100%">
