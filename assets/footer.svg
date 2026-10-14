@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="92" viewBox="0 0 960 92" role="img">
+<defs>
+<style>
+  .serif{font-family:'Iowan Old Style','Palatino Linotype','Book Antiqua',Palatino,'Hoefler Text',Georgia,serif}
+  .sans{font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+  .eyebrow{font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:11px;letter-spacing:2.4px;font-weight:600;fill:#6b6256;text-transform:uppercase}
+  .h{font-family:'Iowan Old Style','Palatino Linotype','Book Antiqua',Palatino,'Hoefler Text',Georgia,serif;font-style:italic;font-weight:400;fill:#2b2620}
+  .body{font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:14px;fill:#6b6256}
+  .dt{font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:10px;letter-spacing:1.2px;fill:#9a9183;text-transform:uppercase}
+  .dd{font-family:'Iowan Old Style','Palatino Linotype','Book Antiqua',Palatino,'Hoefler Text',Georgia,serif;font-size:22px;fill:#2b2620}
+  .chip{font-family:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:12px;fill:#6b6256}
+</style>
+<filter id="sh" x="-10%" y="-10%" width="120%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#3c2814" flood-opacity="0.16"/></filter>
+<radialGradient id="fl-seaglass" cx="32%" cy="30%" r="75%"><stop offset="0" stop-color="#fff"/><stop offset="0.1" stop-color="#fff"/><stop offset="0.38" stop-color="#bfe9d8"/><stop offset="1" stop-color="#2f9c8c"/></radialGradient>
+<radialGradient id="fl-blueberry" cx="32%" cy="30%" r="75%"><stop offset="0" stop-color="#fff"/><stop offset="0.1" stop-color="#fff"/><stop offset="0.38" stop-color="#a9bff0"/><stop offset="1" stop-color="#2a3f94"/></radialGradient>
+<radialGradient id="fl-lime" cx="32%" cy="30%" r="75%"><stop offset="0" stop-color="#fff"/><stop offset="0.1" stop-color="#fff"/><stop offset="0.38" stop-color="#e6f59a"/><stop offset="1" stop-color="#7fae1e"/></radialGradient>
+<radialGradient id="fl-peach" cx="32%" cy="30%" r="75%"><stop offset="0" stop-color="#fff"/><stop offset="0.1" stop-color="#fff"/><stop offset="0.38" stop-color="#f6c9a8"/><stop offset="1" stop-color="#c0704a"/></radialGradient>
+
+</defs>
+
+<line x1="4" y1="1" x2="956" y2="1" stroke="rgba(60,44,24,0.13)"/>
+<text class="sans" x="4" y="40" font-size="10.5" font-weight="600" letter-spacing="2" fill="#2b2620">HOW TO READ</text>
+<text class="sans" x="118" y="40" font-size="12.5" fill="#6b6256">Public cards open their repo · K-Tools install from a git URL in Package Manager · Skills install as a Claude Code plugin.</text>
+<circle cx="14" cy="68" r="9" fill="url(#fl-seaglass)"/><circle cx="14" cy="68" r="9" fill="none" stroke="#000" stroke-opacity="0.08"/><circle cx="38" cy="68" r="9" fill="url(#fl-blueberry)"/><circle cx="38" cy="68" r="9" fill="none" stroke="#000" stroke-opacity="0.08"/><circle cx="62" cy="68" r="9" fill="url(#fl-lime)"/><circle cx="62" cy="68" r="9" fill="none" stroke="#000" stroke-opacity="0.08"/>
+<text class="serif" x="82" y="73" font-size="15" font-style="italic" fill="#6b6256">Set in a block of wobbly sea. Theme borrowed from Harbor Jelly.</text>
+</svg>
