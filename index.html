@@ -237,39 +237,8 @@ dialog form { margin-top: 20px; text-align: right; }
     <symbol id="i-knight" viewBox="0 0 48 48"><path d="M15 22C11 15 11 9 14 4c2 6 4 10 6 13M33 22c4-7 4-13 1-18-2 6-4 10-6 13"/><path d="M14 23c0-6 4-9 10-9s10 3 10 9v6c0 7-4 12-10 12s-10-5-10-12z"/><ellipse cx="19.5" cy="27" rx="2.4" ry="3.6" fill="currentColor"/><ellipse cx="28.5" cy="27" rx="2.4" ry="3.6" fill="currentColor"/></symbol>
     <symbol id="i-hornet" viewBox="0 0 48 48"><path d="M18 17C14 11 13 7 15 2M30 17c4-6 5-10 3-15"/><path d="M16 25c0-6 3-10 8-10s8 4 8 10c0 7-3 12-8 16-5-4-8-9-8-16z"/><ellipse cx="21" cy="26" rx="1.6" ry="2.6" fill="currentColor"/><ellipse cx="27" cy="26" rx="1.6" ry="2.6" fill="currentColor"/></symbol>
     <symbol id="i-needle" viewBox="0 0 48 48"><path d="M10 40L41 7"/><path d="M37 9l2 2"/><path d="M10 40c-5 3-8 0-5-3 4-4 12 1 9 7"/></symbol>
-    <pattern id="bg-row-a" width="520" height="780" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <use href="#i-pad" x="20" y="20" width="56" height="56" transform="rotate(-12 48 48)"/>
-      <use href="#i-cs" x="150" y="40" width="44" height="44" transform="rotate(10 172 62)"/>
-      <use href="#i-hex" x="280" y="10" width="52" height="52" transform="rotate(0 306 36)"/>
-      <use href="#i-fox" x="400" y="35" width="48" height="48" transform="rotate(-8 424 59)"/>
-      <use href="#i-bike" x="10" y="280" width="56" height="56" transform="rotate(-4 38 308)"/>
-      <use href="#i-torii" x="140" y="270" width="48" height="48" transform="rotate(8 164 294)"/>
-      <use href="#i-spire" x="270" y="290" width="46" height="46" transform="rotate(-10 293 313)"/>
-      <use href="#i-axe" x="390" y="265" width="54" height="54" transform="rotate(18 417 292)"/>
-      <use href="#i-knight" x="30" y="530" width="54" height="54" transform="rotate(-8 57 557)"/>
-      <use href="#i-needle" x="170" y="540" width="50" height="50" transform="rotate(12 195 565)"/>
-      <use href="#i-hornet" x="300" y="525" width="54" height="54" transform="rotate(6 327 552)"/>
-      <use href="#i-pad" x="430" y="545" width="46" height="46" transform="rotate(14 453 568)"/>
-      <animateTransform attributeName="patternTransform" type="translate" from="0 0" to="520 0" dur="80s" repeatCount="indefinite" additive="sum"/>
-    </pattern>
-    <pattern id="bg-row-b" width="520" height="780" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <use href="#i-katana" x="70" y="150" width="52" height="52" transform="rotate(15 96 176)"/>
-      <use href="#i-danger" x="210" y="140" width="40" height="40" transform="rotate(0 230 160)"/>
-      <use href="#i-tree" x="330" y="150" width="56" height="56" transform="rotate(-6 358 178)"/>
-      <use href="#i-bat" x="450" y="140" width="44" height="44" transform="rotate(12 472 162)"/>
-      <use href="#i-cube" x="60" y="400" width="44" height="44" transform="rotate(-14 82 422)"/>
-      <use href="#i-code" x="190" y="410" width="48" height="48" transform="rotate(6 214 434)"/>
-      <use href="#i-omega" x="320" y="400" width="40" height="40" transform="rotate(0 340 420)"/>
-      <use href="#i-moon" x="440" y="400" width="46" height="46" transform="rotate(-10 463 423)"/>
-      <use href="#i-tree" x="40" y="660" width="50" height="50" transform="rotate(8 65 685)"/>
-      <use href="#i-cs" x="180" y="670" width="44" height="44" transform="rotate(-6 202 692)"/>
-      <use href="#i-fox" x="300" y="655" width="50" height="50" transform="rotate(10 325 680)"/>
-      <use href="#i-danger" x="440" y="665" width="40" height="40" transform="rotate(0 460 685)"/>
-      <animateTransform attributeName="patternTransform" type="translate" from="0 0" to="-520 0" dur="80s" repeatCount="indefinite" additive="sum"/>
-    </pattern>
   </defs>
-  <rect width="100%" height="100%" fill="url(#bg-row-a)"/>
-  <rect width="100%" height="100%" fill="url(#bg-row-b)"/>
+  <g id="bg-icons" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></g>
 </svg>
 <main>
 
@@ -576,6 +545,107 @@ dialog form { margin-top: 20px; text-align: right; }
 })();
 </script>
 
+<script>
+(() => {
+  const layer = document.getElementById('bg-icons');
+  const icons = [
+    ['hex', 280, 10, 52, 0, 1],
+    ['pad', 20, 20, 56, -12, 1],
+    ['fox', 400, 35, 48, -8, 1],
+    ['cs', 150, 40, 44, 10, 1],
+    ['danger', 210, 140, 40, 0, -1],
+    ['bat', 450, 140, 44, 12, -1],
+    ['katana', 70, 150, 52, 15, -1],
+    ['tree', 330, 150, 56, -6, -1],
+    ['axe', 390, 265, 54, 18, 1],
+    ['torii', 140, 270, 48, 8, 1],
+    ['bike', 10, 280, 56, -4, 1],
+    ['spire', 270, 290, 46, -10, 1],
+    ['cube', 60, 400, 44, -14, -1],
+    ['omega', 320, 400, 40, 0, -1],
+    ['moon', 440, 400, 46, -10, -1],
+    ['code', 190, 410, 48, 6, -1],
+    ['hornet', 300, 525, 54, 6, 1],
+    ['knight', 30, 530, 54, -8, 1],
+    ['needle', 170, 540, 50, 12, 1],
+    ['pad', 430, 545, 46, 14, 1],
+    ['fox', 300, 655, 50, 10, -1],
+    ['tree', 40, 660, 50, 8, -1],
+    ['danger', 440, 665, 40, 0, -1],
+    ['cs', 180, 670, 44, -6, -1]
+  ];
+  const TW = 520, TH = 780, R = 150, PUSH = 48, PERIOD = 80000;
+  const cos = Math.cos(-Math.PI / 6), sin = Math.sin(-Math.PI / 6);
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let items = [], mx = -1e4, my = -1e4, t0 = performance.now();
+
+  const build = () => {
+    const xs = [], ys = [];
+    for (const [px, py] of [[0, 0], [innerWidth, 0], [0, innerHeight], [innerWidth, innerHeight]]) {
+      xs.push(px * cos + py * sin);
+      ys.push(-px * sin + py * cos);
+    }
+    const i0 = Math.floor(Math.min(...xs) / TW) - 1, i1 = Math.floor(Math.max(...xs) / TW) + 1;
+    const j0 = Math.floor(Math.min(...ys) / TH) - 1, j1 = Math.floor(Math.max(...ys) / TH) + 1;
+    items = [];
+    const frag = document.createDocumentFragment();
+    for (let i = i0; i <= i1; i++) for (let j = j0; j <= j1; j++) for (const icon of icons) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+      el.setAttribute('href', `#i-${icon[0]}`);
+      el.setAttribute('width', icon[3]);
+      el.setAttribute('height', icon[3]);
+      frag.append(el);
+      items.push({ el, icon, i, j, ox: 0, oy: 0 });
+    }
+    layer.replaceChildren(frag);
+  };
+
+  const draw = (now) => {
+    const shift = still ? 0 : ((now - t0) / PERIOD * TW) % TW;
+    const sx = scrollY * sin, sy = scrollY * cos;
+    for (const it of items) {
+      const [, x, y, w, r, dir] = it.icon, h = w / 2;
+      const lx = (((x + dir * shift - sx) % TW) + TW) % TW + it.i * TW + h;
+      const ly = (((y - sy) % TH) + TH) % TH + it.j * TH + h;
+      const cx = lx * cos - ly * sin, cy = lx * sin + ly * cos;
+      let tx = 0, ty = 0;
+      const dx = cx - mx, dy = cy - my, d = Math.hypot(dx, dy);
+      if (d < R) {
+        const f = (1 - d / R) ** 2 * PUSH / (d || 1);
+        tx = dx * f;
+        ty = dy * f;
+      }
+      it.ox += (tx - it.ox) * 0.12;
+      it.oy += (ty - it.oy) * 0.12;
+      it.el.setAttribute('transform', `translate(${(cx + it.ox - h).toFixed(1)} ${(cy + it.oy - h).toFixed(1)}) rotate(${r - 30} ${h} ${h})`);
+    }
+  };
+
+  const loop = (now) => {
+    draw(now);
+    requestAnimationFrame(loop);
+  };
+
+  build();
+  if (still) {
+    draw(0);
+    addEventListener('resize', () => { build(); draw(0); });
+    addEventListener('scroll', () => draw(0), { passive: true });
+    return;
+  }
+  let pending = false;
+  addEventListener('resize', () => {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => { pending = false; build(); });
+  });
+  addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; }, { passive: true });
+  document.addEventListener('pointerleave', () => { mx = my = -1e4; });
+  addEventListener('blur', () => { mx = my = -1e4; });
+  requestAnimationFrame(loop);
+})();
+</script>
+
 <canvas id="stage" aria-hidden="true"></canvas>
 
 <script type="importmap">
@@ -586,7 +656,6 @@ dialog form { margin-top: 20px; text-align: right; }
 </script>
 <script type="module">
 const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (still) document.querySelector('.bg-art').pauseAnimations();
 const isDark = () => document.documentElement.dataset.dark === '1';
 
 const start = async () => {
