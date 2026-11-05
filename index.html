@@ -252,6 +252,9 @@ dialog form { margin-top: 20px; text-align: right; }
   <button class="btn tool" id="print-btn" type="button" aria-label="Save as PDF" title="Save as PDF (P)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/></svg>
   </button>
+  <button class="btn tool" id="swarm-btn" type="button" aria-label="Rebuild the page with a swarm of cursors" title="Swarm (S)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3l7 17 2.5-7L21 10.5z"/></svg>
+  </button>
 </div>
 
 <header>
@@ -400,6 +403,7 @@ dialog form { margin-top: 20px; text-align: right; }
     <dt><kbd>L</kbd></dt><dd data-vi="Đổi English / Tiếng Việt">Switch English / Vietnamese</dd>
     <dt><kbd>J</kbd></dt><dd data-vi="Cho mọi model nhảy lên">Make every model jump</dd>
     <dt><kbd>P</kbd></dt><dd data-vi="Lưu thành PDF">Save as PDF</dd>
+    <dt><kbd>S</kbd></dt><dd data-vi="Cho đàn con trỏ dựng lại trang">Let a swarm of cursors rebuild the page</dd>
     <dt><kbd>?</kbd></dt><dd data-vi="Mở bảng này">Open this panel</dd>
   </dl>
   <p class="secret" data-vi="Còn một mã bí mật nữa. Gợi ý: ↑ ↑ ↓ ↓ …">There is one more secret code. Hint: ↑ ↑ ↓ ↓ …</p>
@@ -663,7 +667,7 @@ const start = async () => {
   const { RoundedBoxGeometry } = await import('three/addons/geometries/RoundedBoxGeometry.js');
 
   const canvas = document.getElementById('stage');
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.setClearColor(0x000000, 0);
   renderer.shadowMap.enabled = true;
@@ -1317,6 +1321,58 @@ const start = async () => {
   addEventListener('pointermove', (e) => { pointer.x = e.clientX; pointer.y = e.clientY; }, { passive: true });
   const offset = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0), side = new THREE.Vector3();
 
+  const fit = (v, r) => {
+    const cam = v.camera, u = cam.userData;
+    if (!u.base) u.base = cam.position.clone().sub(u.target);
+    const aspect = r.width / r.height;
+    if (u.aspect !== aspect) {
+      u.aspect = aspect;
+      const half = u.frame ? u.frame(aspect) : u.size;
+      cam.left = -half * aspect;
+      cam.right = half * aspect;
+      cam.top = half;
+      cam.bottom = -half;
+      cam.updateProjectionMatrix();
+    }
+    return u;
+  };
+  const aim = (v) => {
+    const cam = v.camera, u = cam.userData;
+    offset.copy(u.base).applyAxisAngle(up, v.yaw);
+    side.crossVectors(offset, up).normalize();
+    offset.applyAxisAngle(side, v.pitch);
+    cam.position.copy(u.target).add(offset);
+    cam.lookAt(u.target);
+  };
+
+  window.__profileSnapshot = () => {
+    const W = document.documentElement.clientWidth, H = document.documentElement.clientHeight;
+    const size = renderer.getSize(new THREE.Vector2());
+    if (size.x !== W || size.y !== H) renderer.setSize(W, H, false);
+    const pr = renderer.getPixelRatio();
+    const t = performance.now() / 1000;
+    const out = [];
+    for (const v of views) {
+      const r = v.el.getBoundingClientRect();
+      if (!r.width || !r.height || r.width > W || r.height > H) continue;
+      fit(v, r);
+      aim(v);
+      v.update(t, 0);
+      renderer.setViewport(0, H - r.height, r.width, r.height);
+      renderer.setScissor(0, H - r.height, r.width, r.height);
+      renderer.clear();
+      renderer.render(v.scene, v.camera);
+      const c = document.createElement('canvas');
+      c.width = Math.round(r.width * pr);
+      c.height = Math.round(r.height * pr);
+      c.getContext('2d').drawImage(canvas, 0, 0, c.width, c.height, 0, 0, c.width, c.height);
+      out.push({ el: v.el, url: c.toDataURL() });
+    }
+    renderer.setScissor(0, 0, W, H);
+    renderer.clear();
+    return out;
+  };
+
   let prev = performance.now();
   const draw = (now) => {
     const dt = Math.min(0.05, (now - prev) / 1000);
@@ -1330,29 +1386,14 @@ const start = async () => {
     for (const v of views) {
       const r = v.el.getBoundingClientRect();
       if (!r.width || r.bottom < 0 || r.top > H) continue;
-      const cam = v.camera, u = cam.userData;
-      if (!u.base) u.base = cam.position.clone().sub(u.target);
-      const aspect = r.width / r.height;
-      if (u.aspect !== aspect) {
-        u.aspect = aspect;
-        const half = u.frame ? u.frame(aspect) : u.size;
-        cam.left = -half * aspect;
-        cam.right = half * aspect;
-        cam.top = half;
-        cam.bottom = -half;
-        cam.updateProjectionMatrix();
-      }
+      const cam = v.camera, u = fit(v, r);
       const has = pointer.x >= 0 && !still;
       const dx = has ? Math.max(-1, Math.min(1, (pointer.x - (r.left + r.width / 2)) / 600)) : 0;
       const dy = has ? Math.max(-1, Math.min(1, (pointer.y - (r.top + r.height / 2)) / 600)) : 0;
       const f = Math.min(1, dt * 4);
       v.yaw += (dx * 0.35 * u.tilt - v.yaw) * f;
       v.pitch += (dy * 0.18 * u.tilt - v.pitch) * f;
-      offset.copy(u.base).applyAxisAngle(up, v.yaw);
-      side.crossVectors(offset, up).normalize();
-      offset.applyAxisAngle(side, v.pitch);
-      cam.position.copy(u.target).add(offset);
-      cam.lookAt(u.target);
+      aim(v);
       v.jump.v += (-60 * v.jump.x - 5 * v.jump.v) * dt;
       v.jump.x += v.jump.v * dt;
       v.scene.position.y = v.jump.x * 0.12;
@@ -1383,5 +1424,6 @@ const start = async () => {
 
 start().catch(() => {});
 </script>
+<script src="swarm/loader.js" defer></script>
 </body>
 </html>
