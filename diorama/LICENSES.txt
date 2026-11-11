@@ -1,0 +1,11 @@
+Textures embedded in textures.js are from Poly Haven (https://polyhaven.com), CC0 1.0, resized to 512 px and base64-encoded.
+
+leafy_grass            https://polyhaven.com/a/leafy_grass
+mossy_cobblestone      https://polyhaven.com/a/mossy_cobblestone
+clay_roof_tiles_02     https://polyhaven.com/a/clay_roof_tiles_02
+clay_plaster           https://polyhaven.com/a/clay_plaster
+bark_brown_02          https://polyhaven.com/a/bark_brown_02
+aerial_rocks_02        https://polyhaven.com/a/aerial_rocks_02
+
+diorama.js is adapted from the ascii-diorama skill template by JDhruv14
+(https://github.com/JDhruv14/ascii-diorama), MIT.

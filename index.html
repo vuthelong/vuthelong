@@ -142,6 +142,9 @@ header, section, .item { position: relative; }
 :root[data-dark="1"] .bg-art { opacity: 0.08; }
 #stage { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; opacity: 0; transition: opacity 0.8s ease; }
 #stage.ready { opacity: 1; }
+#diorama { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: -2; opacity: 0; transition: opacity 1.4s ease; -webkit-mask-image: linear-gradient(90deg, #000, rgba(0, 0, 0, 0.45) 30%, rgba(0, 0, 0, 0.45) 70%, #000); mask-image: linear-gradient(90deg, #000, rgba(0, 0, 0, 0.45) 30%, rgba(0, 0, 0, 0.45) 70%, #000); }
+#diorama.ready { opacity: 0.18; }
+:root[data-dark="1"] #diorama.ready { opacity: 0.3; }
 @media (min-width: 1240px) { .model { display: block; } }
 @media (max-width: 1239px) {
   .model { display: block; position: static; width: 96px; flex: none; }
@@ -207,7 +210,7 @@ dialog form { margin-top: 20px; text-align: right; }
   @page { size: A4; margin: 14mm 16mm; }
   body { font-size: 11pt; }
   main { max-width: none; padding: 0; }
-  .btn, .toolbar, .model, .chart, #stage, .bg-art, .tip, .toast, dialog { display: none !important; }
+  .btn, .toolbar, .model, .chart, #stage, #diorama, .bg-art, .tip, .toast, dialog { display: none !important; }
   section { margin-top: 28px; break-inside: auto; }
   .item { break-inside: avoid; padding: 10px 0; }
   a { text-decoration: none; }
@@ -650,6 +653,7 @@ dialog form { margin-top: 20px; text-align: right; }
 })();
 </script>
 
+<canvas id="diorama" aria-hidden="true"></canvas>
 <canvas id="stage" aria-hidden="true"></canvas>
 
 <script type="importmap">
@@ -1424,6 +1428,8 @@ const start = async () => {
 
 start().catch(() => {});
 </script>
+<script src="diorama/textures.js" defer></script>
+<script src="diorama/diorama.js" defer></script>
 <script src="swarm/loader.js" defer></script>
 </body>
 </html>
